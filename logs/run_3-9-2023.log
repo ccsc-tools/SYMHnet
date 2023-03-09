@@ -1,0 +1,630 @@
+Starting the training for start_hour: 1 end_hour: 7
+Running training for h = 1 hour ahead
+[2023-03-09 11:51:16] [2023-03-09 11:51:16] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\training_data_1h.csv data\solar_wind_symh_1min\1h\training_data_1h.csv 
+
+[2023-03-09 11:51:16] [2023-03-09 11:51:16] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\storms_data_1h.csv data\solar_wind_symh_1min\1h\storms_data_1h.csv 
+
+[2023-03-09 11:51:16] [2023-03-09 11:51:16] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\validation_data_1h.csv data\solar_wind_symh_1min\1h\validation_data_1h.csv 
+
+num_hours	col_name	Storm#	mse	r2	r2a	r2b
+Starting the training for start_hour: 1 end_hour: 7
+Running training for h = 1 hour ahead
+[2023-03-09 11:52:14] [2023-03-09 11:52:14] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\training_data_1h.csv data\solar_wind_symh_1min\1h\training_data_1h.csv 
+
+[2023-03-09 11:52:14] [2023-03-09 11:52:14] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\storms_data_1h.csv data\solar_wind_symh_1min\1h\storms_data_1h.csv 
+
+[2023-03-09 11:52:14] [2023-03-09 11:52:14] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\validation_data_1h.csv data\solar_wind_symh_1min\1h\validation_data_1h.csv 
+
+num_hours	col_name	Storm#	mse	r2	r2a	r2b
+Starting the training for start_hour: 1 end_hour: 7
+Running training for h = 1 hour ahead
+[2023-03-09 11:55:01] [2023-03-09 11:55:01] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\training_data_1h.csv data\solar_wind_symh_1min\1h\training_data_1h.csv 
+
+[2023-03-09 11:55:02] [2023-03-09 11:55:02] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\storms_data_1h.csv data\solar_wind_symh_1min\1h\storms_data_1h.csv 
+
+[2023-03-09 11:55:02] [2023-03-09 11:55:02] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\validation_data_1h.csv data\solar_wind_symh_1min\1h\validation_data_1h.csv 
+
+num_hours	col_name	Storm#	mse	r2	r2a	r2b
+Starting the training for start_hour: 1 end_hour: 7
+Running training for h = 1 hour ahead
+[2023-03-09 11:55:36] [2023-03-09 11:55:36] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\training_data_1h.csv data\solar_wind_symh_1min\1h\training_data_1h.csv 
+
+[2023-03-09 11:55:36] [2023-03-09 11:55:36] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\storms_data_1h.csv data\solar_wind_symh_1min\1h\storms_data_1h.csv 
+
+[2023-03-09 11:55:37] [2023-03-09 11:55:37] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\validation_data_1h.csv data\solar_wind_symh_1min\1h\validation_data_1h.csv 
+
+Starting the training for start_hour: 1 end_hour: 7
+Running training for h = 1 hour ahead
+[2023-03-09 11:56:20] [2023-03-09 11:56:20] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\training_data_1h.csv data\solar_wind_symh_1min\1h\training_data_1h.csv 
+
+[2023-03-09 11:56:20] [2023-03-09 11:56:20] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\storms_data_1h.csv data\solar_wind_symh_1min\1h\storms_data_1h.csv 
+
+[2023-03-09 11:56:21] [2023-03-09 11:56:21] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\validation_data_1h.csv data\solar_wind_symh_1min\1h\validation_data_1h.csv 
+
+num_hours	col_name	Storm#	mse	r2	r2a	r2b
+[2023-03-09 11:56:23] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 11:56:23] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 11:56:23] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification
+  1/100  [===== Uncertainty Quantification ======]  -    1/100 %
+  2/100  [===== Uncertainty Quantification ======]  -    2/100 %
+  3/100  [===== Uncertainty Quantification ======]  -    3/100 %
+  4/100  [===== Uncertainty Quantification ======]  -    4/100 %
+  5/100  [===== Uncertainty Quantification ======]  -    5/100 %
+  6/100  [===== Uncertainty Quantification ======]  -    6/100 %
+  7/100  [===== Uncertainty Quantification ======]  -    7/100 %
+  8/100  [===== Uncertainty Quantification ======]  -    8/100 %
+  9/100  [===== Uncertainty Quantification ======]  -    9/100 %
+ 10/100  [===== Uncertainty Quantification ======]  -   10/100 %
+ 11/100  [===== Uncertainty Quantification ======]  -   11/100 %
+ 12/100  [===== Uncertainty Quantification ======]  -   12/100 %
+ 13/100  [===== Uncertainty Quantification ======]  -   13/100 %
+ 14/100  [===== Uncertainty Quantification ======]  -   14/100 %
+ 15/100  [===== Uncertainty Quantification ======]  -   15/100 %
+ 16/100  [===== Uncertainty Quantification ======]  -   16/100 %
+ 17/100  [===== Uncertainty Quantification ======]  -   17/100 %
+ 18/100  [===== Uncertainty Quantification ======]  -   18/100 %
+ 19/100  [===== Uncertainty Quantification ======]  -   19/100 %
+ 20/100  [===== Uncertainty Quantification ======]  -   20/100 %
+ 21/100  [===== Uncertainty Quantification ======]  -   21/100 %
+ 22/100  [===== Uncertainty Quantification ======]  -   22/100 %
+ 23/100  [===== Uncertainty Quantification ======]  -   23/100 %
+ 24/100  [===== Uncertainty Quantification ======]  -   24/100 %
+ 25/100  [===== Uncertainty Quantification ======]  -   25/100 %
+ 26/100  [===== Uncertainty Quantification ======]  -   26/100 %
+ 27/100  [===== Uncertainty Quantification ======]  -   27/100 %
+ 28/100  [===== Uncertainty Quantification ======]  -   28/100 %
+ 29/100  [===== Uncertainty Quantification ======]  -   28/100 %
+ 30/100  [===== Uncertainty Quantification ======]  -   30/100 %
+ 31/100  [===== Uncertainty Quantification ======]  -   31/100 %
+ 32/100  [===== Uncertainty Quantification ======]  -   32/100 %
+ 33/100  [===== Uncertainty Quantification ======]  -   33/100 %
+ 34/100  [===== Uncertainty Quantification ======]  -   34/100 %
+ 35/100  [===== Uncertainty Quantification ======]  -   35/100 %
+ 36/100  [===== Uncertainty Quantification ======]  -   36/100 %
+ 37/100  [===== Uncertainty Quantification ======]  -   37/100 %
+ 38/100  [===== Uncertainty Quantification ======]  -   38/100 %
+ 39/100  [===== Uncertainty Quantification ======]  -   39/100 %
+ 40/100  [===== Uncertainty Quantification ======]  -   40/100 %
+ 41/100  [===== Uncertainty Quantification ======]  -   41/100 %
+ 42/100  [===== Uncertainty Quantification ======]  -   42/100 %
+ 43/100  [===== Uncertainty Quantification ======]  -   43/100 %
+ 44/100  [===== Uncertainty Quantification ======]  -   44/100 %
+ 45/100  [===== Uncertainty Quantification ======]  -   45/100 %
+ 46/100  [===== Uncertainty Quantification ======]  -   46/100 %
+ 47/100  [===== Uncertainty Quantification ======]  -   47/100 %
+ 48/100  [===== Uncertainty Quantification ======]  -   48/100 %
+ 49/100  [===== Uncertainty Quantification ======]  -   49/100 %
+ 50/100  [===== Uncertainty Quantification ======]  -   50/100 %
+ 51/100  [===== Uncertainty Quantification ======]  -   51/100 %
+ 52/100  [===== Uncertainty Quantification ======]  -   52/100 %
+ 53/100  [===== Uncertainty Quantification ======]  -   53/100 %
+ 54/100  [===== Uncertainty Quantification ======]  -   54/100 %
+ 55/100  [===== Uncertainty Quantification ======]  -   55/100 %
+ 56/100  [===== Uncertainty Quantification ======]  -   56/100 %
+ 57/100  [===== Uncertainty Quantification ======]  -   56/100 %
+ 58/100  [===== Uncertainty Quantification ======]  -   57/100 %
+ 59/100  [===== Uncertainty Quantification ======]  -   59/100 %
+ 60/100  [===== Uncertainty Quantification ======]  -   60/100 %
+ 61/100  [===== Uncertainty Quantification ======]  -   61/100 %
+ 62/100  [===== Uncertainty Quantification ======]  -   62/100 %
+ 63/100  [===== Uncertainty Quantification ======]  -   63/100 %
+ 64/100  [===== Uncertainty Quantification ======]  -   64/100 %
+ 65/100  [===== Uncertainty Quantification ======]  -   65/100 %
+ 66/100  [===== Uncertainty Quantification ======]  -   66/100 %
+ 67/100  [===== Uncertainty Quantification ======]  -   67/100 %
+ 68/100  [===== Uncertainty Quantification ======]  -   68/100 %
+ 69/100  [===== Uncertainty Quantification ======]  -   69/100 %
+ 70/100  [===== Uncertainty Quantification ======]  -   70/100 %
+ 71/100  [===== Uncertainty Quantification ======]  -   71/100 %
+ 72/100  [===== Uncertainty Quantification ======]  -   72/100 %
+ 73/100  [===== Uncertainty Quantification ======]  -   73/100 %
+ 74/100  [===== Uncertainty Quantification ======]  -   74/100 %
+ 75/100  [===== Uncertainty Quantification ======]  -   75/100 %
+ 76/100  [===== Uncertainty Quantification ======]  -   76/100 %
+ 77/100  [===== Uncertainty Quantification ======]  -   77/100 %
+ 78/100  [===== Uncertainty Quantification ======]  -   78/100 %
+ 79/100  [===== Uncertainty Quantification ======]  -   79/100 %
+ 80/100  [===== Uncertainty Quantification ======]  -   80/100 %
+ 81/100  [===== Uncertainty Quantification ======]  -   81/100 %
+ 82/100  [===== Uncertainty Quantification ======]  -   82/100 %
+ 83/100  [===== Uncertainty Quantification ======]  -   83/100 %
+ 84/100  [===== Uncertainty Quantification ======]  -   84/100 %
+ 85/100  [===== Uncertainty Quantification ======]  -   85/100 %
+ 86/100  [===== Uncertainty Quantification ======]  -   86/100 %
+ 87/100  [===== Uncertainty Quantification ======]  -   87/100 %
+ 88/100  [===== Uncertainty Quantification ======]  -   88/100 %
+ 89/100  [===== Uncertainty Quantification ======]  -   89/100 %
+ 90/100  [===== Uncertainty Quantification ======]  -   90/100 %
+ 91/100  [===== Uncertainty Quantification ======]  -   91/100 %
+ 92/100  [===== Uncertainty Quantification ======]  -   92/100 %
+ 93/100  [===== Uncertainty Quantification ======]  -   93/100 %
+ 94/100  [===== Uncertainty Quantification ======]  -   94/100 %
+ 95/100  [===== Uncertainty Quantification ======]  -   95/100 %
+ 96/100  [===== Uncertainty Quantification ======]  -   96/100 %
+ 97/100  [===== Uncertainty Quantification ======]  -   97/100 %
+ 98/100  [===== Uncertainty Quantification ======]  -   98/100 %
+ 99/100  [===== Uncertainty Quantification ======]  -   99/100 %
+100/100  [===== Uncertainty Quantification ======]  -  100/100 %
+[2023-03-09 11:56:30] x_label is:  
+Setting ylimits...: -170 70
+Setting xticks with: ['1/18/2004', '1/20/2004', '1/22/2004', '1/24/2004', '1/26/2004']
+file_name inside: figures\storm_1min_36_1h_symh_uq.pdf
+[2023-03-09 11:56:30] Saving figure to file: figures\storm_1min_36_1h_symh_uq.pdf 
+Running training for h = 2 hour ahead
+[2023-03-09 11:56:31] [2023-03-09 11:56:31] Loading data from file: Loading data from file: data\solar_wind_symh_5min\2h\training_data_2h.csv data\solar_wind_symh_5min\2h\training_data_2h.csv 
+
+[2023-03-09 11:56:31] [2023-03-09 11:56:31] Loading data from file: Loading data from file: data\solar_wind_symh_5min\2h\storms_data_2h.csv data\solar_wind_symh_5min\2h\storms_data_2h.csv 
+
+[2023-03-09 11:56:31] [2023-03-09 11:56:31] Loading data from file: Loading data from file: data\solar_wind_symh_5min\2h\validation_data_2h.csv data\solar_wind_symh_5min\2h\validation_data_2h.csv 
+
+Starting the training for start_hour: 1 end_hour: 7
+Running training for h = 1 hour ahead
+[2023-03-09 12:02:07] [2023-03-09 12:02:07] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\training_data_1h.csv data\solar_wind_symh_1min\1h\training_data_1h.csv 
+
+[2023-03-09 12:02:08] [2023-03-09 12:02:08] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\storms_data_1h.csv data\solar_wind_symh_1min\1h\storms_data_1h.csv 
+
+[2023-03-09 12:02:08] [2023-03-09 12:02:08] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\validation_data_1h.csv data\solar_wind_symh_1min\1h\validation_data_1h.csv 
+
+num_hours	col_name	Storm#	mse	r2	r2a	r2b
+[2023-03-09 12:02:09] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:02:09] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:02:09] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification
+  1/100  [===== Uncertainty Quantification ======]  -    1/100 %
+  2/100  [===== Uncertainty Quantification ======]  -    2/100 %
+  3/100  [===== Uncertainty Quantification ======]  -    3/100 %
+  4/100  [===== Uncertainty Quantification ======]  -    4/100 %
+  5/100  [===== Uncertainty Quantification ======]  -    5/100 %
+  6/100  [===== Uncertainty Quantification ======]  -    6/100 %
+  7/100  [===== Uncertainty Quantification ======]  -    7/100 %
+  8/100  [===== Uncertainty Quantification ======]  -    8/100 %
+  9/100  [===== Uncertainty Quantification ======]  -    9/100 %
+ 10/100  [===== Uncertainty Quantification ======]  -   10/100 %
+ 11/100  [===== Uncertainty Quantification ======]  -   11/100 %
+ 12/100  [===== Uncertainty Quantification ======]  -   12/100 %
+ 13/100  [===== Uncertainty Quantification ======]  -   13/100 %
+ 14/100  [===== Uncertainty Quantification ======]  -   14/100 %
+ 15/100  [===== Uncertainty Quantification ======]  -   15/100 %
+ 16/100  [===== Uncertainty Quantification ======]  -   16/100 %
+ 17/100  [===== Uncertainty Quantification ======]  -   17/100 %
+ 18/100  [===== Uncertainty Quantification ======]  -   18/100 %
+ 19/100  [===== Uncertainty Quantification ======]  -   19/100 %
+ 20/100  [===== Uncertainty Quantification ======]  -   20/100 %
+ 21/100  [===== Uncertainty Quantification ======]  -   21/100 %
+ 22/100  [===== Uncertainty Quantification ======]  -   22/100 %
+ 23/100  [===== Uncertainty Quantification ======]  -   23/100 %
+ 24/100  [===== Uncertainty Quantification ======]  -   24/100 %
+ 25/100  [===== Uncertainty Quantification ======]  -   25/100 %
+ 26/100  [===== Uncertainty Quantification ======]  -   26/100 %
+ 27/100  [===== Uncertainty Quantification ======]  -   27/100 %
+ 28/100  [===== Uncertainty Quantification ======]  -   28/100 %
+ 29/100  [===== Uncertainty Quantification ======]  -   28/100 %
+ 30/100  [===== Uncertainty Quantification ======]  -   30/100 %
+ 31/100  [===== Uncertainty Quantification ======]  -   31/100 %
+ 32/100  [===== Uncertainty Quantification ======]  -   32/100 %
+ 33/100  [===== Uncertainty Quantification ======]  -   33/100 %
+ 34/100  [===== Uncertainty Quantification ======]  -   34/100 %
+ 35/100  [===== Uncertainty Quantification ======]  -   35/100 %
+ 36/100  [===== Uncertainty Quantification ======]  -   36/100 %
+ 37/100  [===== Uncertainty Quantification ======]  -   37/100 %
+ 38/100  [===== Uncertainty Quantification ======]  -   38/100 %
+ 39/100  [===== Uncertainty Quantification ======]  -   39/100 %
+ 40/100  [===== Uncertainty Quantification ======]  -   40/100 %
+ 41/100  [===== Uncertainty Quantification ======]  -   41/100 %
+ 42/100  [===== Uncertainty Quantification ======]  -   42/100 %
+ 43/100  [===== Uncertainty Quantification ======]  -   43/100 %
+ 44/100  [===== Uncertainty Quantification ======]  -   44/100 %
+ 45/100  [===== Uncertainty Quantification ======]  -   45/100 %
+ 46/100  [===== Uncertainty Quantification ======]  -   46/100 %
+ 47/100  [===== Uncertainty Quantification ======]  -   47/100 %
+ 48/100  [===== Uncertainty Quantification ======]  -   48/100 %
+ 49/100  [===== Uncertainty Quantification ======]  -   49/100 %
+ 50/100  [===== Uncertainty Quantification ======]  -   50/100 %
+ 51/100  [===== Uncertainty Quantification ======]  -   51/100 %
+ 52/100  [===== Uncertainty Quantification ======]  -   52/100 %
+ 53/100  [===== Uncertainty Quantification ======]  -   53/100 %
+ 54/100  [===== Uncertainty Quantification ======]  -   54/100 %
+ 55/100  [===== Uncertainty Quantification ======]  -   55/100 %
+ 56/100  [===== Uncertainty Quantification ======]  -   56/100 %
+ 57/100  [===== Uncertainty Quantification ======]  -   56/100 %
+ 58/100  [===== Uncertainty Quantification ======]  -   57/100 %
+ 59/100  [===== Uncertainty Quantification ======]  -   59/100 %
+ 60/100  [===== Uncertainty Quantification ======]  -   60/100 %
+ 61/100  [===== Uncertainty Quantification ======]  -   61/100 %
+ 62/100  [===== Uncertainty Quantification ======]  -   62/100 %
+ 63/100  [===== Uncertainty Quantification ======]  -   63/100 %
+ 64/100  [===== Uncertainty Quantification ======]  -   64/100 %
+ 65/100  [===== Uncertainty Quantification ======]  -   65/100 %
+ 66/100  [===== Uncertainty Quantification ======]  -   66/100 %
+ 67/100  [===== Uncertainty Quantification ======]  -   67/100 %
+ 68/100  [===== Uncertainty Quantification ======]  -   68/100 %
+ 69/100  [===== Uncertainty Quantification ======]  -   69/100 %
+ 70/100  [===== Uncertainty Quantification ======]  -   70/100 %
+ 71/100  [===== Uncertainty Quantification ======]  -   71/100 %
+ 72/100  [===== Uncertainty Quantification ======]  -   72/100 %
+ 73/100  [===== Uncertainty Quantification ======]  -   73/100 %
+ 74/100  [===== Uncertainty Quantification ======]  -   74/100 %
+ 75/100  [===== Uncertainty Quantification ======]  -   75/100 %
+ 76/100  [===== Uncertainty Quantification ======]  -   76/100 %
+ 77/100  [===== Uncertainty Quantification ======]  -   77/100 %
+ 78/100  [===== Uncertainty Quantification ======]  -   78/100 %
+ 79/100  [===== Uncertainty Quantification ======]  -   79/100 %
+ 80/100  [===== Uncertainty Quantification ======]  -   80/100 %
+ 81/100  [===== Uncertainty Quantification ======]  -   81/100 %
+ 82/100  [===== Uncertainty Quantification ======]  -   82/100 %
+ 83/100  [===== Uncertainty Quantification ======]  -   83/100 %
+ 84/100  [===== Uncertainty Quantification ======]  -   84/100 %
+ 85/100  [===== Uncertainty Quantification ======]  -   85/100 %
+ 86/100  [===== Uncertainty Quantification ======]  -   86/100 %
+ 87/100  [===== Uncertainty Quantification ======]  -   87/100 %
+ 88/100  [===== Uncertainty Quantification ======]  -   88/100 %
+ 89/100  [===== Uncertainty Quantification ======]  -   89/100 %
+ 90/100  [===== Uncertainty Quantification ======]  -   90/100 %
+ 91/100  [===== Uncertainty Quantification ======]  -   91/100 %
+ 92/100  [===== Uncertainty Quantification ======]  -   92/100 %
+ 93/100  [===== Uncertainty Quantification ======]  -   93/100 %
+ 94/100  [===== Uncertainty Quantification ======]  -   94/100 %
+ 95/100  [===== Uncertainty Quantification ======]  -   95/100 %
+ 96/100  [===== Uncertainty Quantification ======]  -   96/100 %
+ 97/100  [===== Uncertainty Quantification ======]  -   97/100 %
+ 98/100  [===== Uncertainty Quantification ======]  -   98/100 %
+ 99/100  [===== Uncertainty Quantification ======]  -   99/100 %
+100/100  [===== Uncertainty Quantification ======]  -  100/100 %
+[2023-03-09 12:02:16] x_label is:  
+Setting ylimits...: -170 70
+Setting xticks with: ['1/18/2004', '1/20/2004', '1/22/2004', '1/24/2004', '1/26/2004']
+file_name inside: figures\storm_1min_36_1h_symh_uq.pdf
+[2023-03-09 12:02:16] Saving figure to file: figures\storm_1min_36_1h_symh_uq.pdf 
+Running training for h = 2 hour ahead
+[2023-03-09 12:02:16] [2023-03-09 12:02:16] Loading data from file: Loading data from file: data\solar_wind_symh_5min\2h\training_data_2h.csv data\solar_wind_symh_5min\2h\training_data_2h.csv 
+
+[2023-03-09 12:02:16] [2023-03-09 12:02:16] Loading data from file: Loading data from file: data\solar_wind_symh_5min\2h\storms_data_2h.csv data\solar_wind_symh_5min\2h\storms_data_2h.csv 
+
+[2023-03-09 12:02:16] [2023-03-09 12:02:16] Loading data from file: Loading data from file: data\solar_wind_symh_5min\2h\validation_data_2h.csv data\solar_wind_symh_5min\2h\validation_data_2h.csv 
+
+len(sys.argv): 1
+len(sys.argv): 3
+Starting hour: 1 ending hour: 1
+Starting the training for start_hour: 1 end_hour: 2
+Running training for h = 1 hour ahead
+[2023-03-09 12:04:23] [2023-03-09 12:04:23] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\training_data_1h.csv data\solar_wind_symh_1min\1h\training_data_1h.csv 
+
+[2023-03-09 12:04:23] [2023-03-09 12:04:23] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\storms_data_1h.csv data\solar_wind_symh_1min\1h\storms_data_1h.csv 
+
+[2023-03-09 12:04:23] [2023-03-09 12:04:23] Loading data from file: Loading data from file: data\solar_wind_symh_1min\1h\validation_data_1h.csv data\solar_wind_symh_1min\1h\validation_data_1h.csv 
+
+[2023-03-09 12:04:28] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:04:28] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:04:28] end_date_ts: 2004-02-29 17:50:00 
+len(sys.argv): 3
+Starting hour: 1 ending hour: 1
+Starting the training for start_hour: 1 end_hour: 2
+Running testing for h = 1 hour ahead
+[2023-03-09 12:06:05] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:06:05] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:06:05] end_date_ts: 2004-02-29 17:50:00 
+len(sys.argv): 3
+Starting hour: 1 ending hour: 1
+Starting the training for start_hour: 1 end_hour: 2
+Running testing for h = 1 hour ahead
+[2023-03-09 12:43:40] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:43:40] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:43:40] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+  1/100  [===== Uncertainty Quantification ======]  -    1/100 %
+  2/100  [===== Uncertainty Quantification ======]  -    2/100 %
+  3/100  [===== Uncertainty Quantification ======]  -    3/100 %
+  4/100  [===== Uncertainty Quantification ======]  -    4/100 %
+  5/100  [===== Uncertainty Quantification ======]  -    5/100 %
+  6/100  [===== Uncertainty Quantification ======]  -    6/100 %
+  7/100  [===== Uncertainty Quantification ======]  -    7/100 %
+  8/100  [===== Uncertainty Quantification ======]  -    8/100 %
+  9/100  [===== Uncertainty Quantification ======]  -    9/100 %
+ 10/100  [===== Uncertainty Quantification ======]  -   10/100 %
+ 11/100  [===== Uncertainty Quantification ======]  -   11/100 %
+ 12/100  [===== Uncertainty Quantification ======]  -   12/100 %
+ 13/100  [===== Uncertainty Quantification ======]  -   13/100 %
+ 14/100  [===== Uncertainty Quantification ======]  -   14/100 %
+ 15/100  [===== Uncertainty Quantification ======]  -   15/100 %
+ 16/100  [===== Uncertainty Quantification ======]  -   16/100 %
+ 17/100  [===== Uncertainty Quantification ======]  -   17/100 %
+ 18/100  [===== Uncertainty Quantification ======]  -   18/100 %
+ 19/100  [===== Uncertainty Quantification ======]  -   19/100 %
+ 20/100  [===== Uncertainty Quantification ======]  -   20/100 %
+ 21/100  [===== Uncertainty Quantification ======]  -   21/100 %
+ 22/100  [===== Uncertainty Quantification ======]  -   22/100 %
+ 23/100  [===== Uncertainty Quantification ======]  -   23/100 %
+ 24/100  [===== Uncertainty Quantification ======]  -   24/100 %
+ 25/100  [===== Uncertainty Quantification ======]  -   25/100 %
+ 26/100  [===== Uncertainty Quantification ======]  -   26/100 %
+ 27/100  [===== Uncertainty Quantification ======]  -   27/100 %
+ 28/100  [===== Uncertainty Quantification ======]  -   28/100 %
+ 29/100  [===== Uncertainty Quantification ======]  -   28/100 %
+ 30/100  [===== Uncertainty Quantification ======]  -   30/100 %
+ 31/100  [===== Uncertainty Quantification ======]  -   31/100 %
+ 32/100  [===== Uncertainty Quantification ======]  -   32/100 %
+ 33/100  [===== Uncertainty Quantification ======]  -   33/100 %
+ 34/100  [===== Uncertainty Quantification ======]  -   34/100 %
+ 35/100  [===== Uncertainty Quantification ======]  -   35/100 %
+ 36/100  [===== Uncertainty Quantification ======]  -   36/100 %
+ 37/100  [===== Uncertainty Quantification ======]  -   37/100 %
+ 38/100  [===== Uncertainty Quantification ======]  -   38/100 %
+ 39/100  [===== Uncertainty Quantification ======]  -   39/100 %
+ 40/100  [===== Uncertainty Quantification ======]  -   40/100 %
+ 41/100  [===== Uncertainty Quantification ======]  -   41/100 %
+ 42/100  [===== Uncertainty Quantification ======]  -   42/100 %
+ 43/100  [===== Uncertainty Quantification ======]  -   43/100 %
+ 44/100  [===== Uncertainty Quantification ======]  -   44/100 %
+ 45/100  [===== Uncertainty Quantification ======]  -   45/100 %
+ 46/100  [===== Uncertainty Quantification ======]  -   46/100 %
+ 47/100  [===== Uncertainty Quantification ======]  -   47/100 %
+ 48/100  [===== Uncertainty Quantification ======]  -   48/100 %
+ 49/100  [===== Uncertainty Quantification ======]  -   49/100 %
+ 50/100  [===== Uncertainty Quantification ======]  -   50/100 %
+ 51/100  [===== Uncertainty Quantification ======]  -   51/100 %
+ 52/100  [===== Uncertainty Quantification ======]  -   52/100 %
+ 53/100  [===== Uncertainty Quantification ======]  -   53/100 %
+ 54/100  [===== Uncertainty Quantification ======]  -   54/100 %
+ 55/100  [===== Uncertainty Quantification ======]  -   55/100 %
+ 56/100  [===== Uncertainty Quantification ======]  -   56/100 %
+ 57/100  [===== Uncertainty Quantification ======]  -   56/100 %
+ 58/100  [===== Uncertainty Quantification ======]  -   57/100 %
+ 59/100  [===== Uncertainty Quantification ======]  -   59/100 %
+ 60/100  [===== Uncertainty Quantification ======]  -   60/100 %
+ 61/100  [===== Uncertainty Quantification ======]  -   61/100 %
+ 62/100  [===== Uncertainty Quantification ======]  -   62/100 %
+ 63/100  [===== Uncertainty Quantification ======]  -   63/100 %
+ 64/100  [===== Uncertainty Quantification ======]  -   64/100 %
+ 65/100  [===== Uncertainty Quantification ======]  -   65/100 %
+ 66/100  [===== Uncertainty Quantification ======]  -   66/100 %
+ 67/100  [===== Uncertainty Quantification ======]  -   67/100 %
+ 68/100  [===== Uncertainty Quantification ======]  -   68/100 %
+ 69/100  [===== Uncertainty Quantification ======]  -   69/100 %
+ 70/100  [===== Uncertainty Quantification ======]  -   70/100 %
+ 71/100  [===== Uncertainty Quantification ======]  -   71/100 %
+ 72/100  [===== Uncertainty Quantification ======]  -   72/100 %
+ 73/100  [===== Uncertainty Quantification ======]  -   73/100 %
+ 74/100  [===== Uncertainty Quantification ======]  -   74/100 %
+ 75/100  [===== Uncertainty Quantification ======]  -   75/100 %
+ 76/100  [===== Uncertainty Quantification ======]  -   76/100 %
+ 77/100  [===== Uncertainty Quantification ======]  -   77/100 %
+ 78/100  [===== Uncertainty Quantification ======]  -   78/100 %
+ 79/100  [===== Uncertainty Quantification ======]  -   79/100 %
+ 80/100  [===== Uncertainty Quantification ======]  -   80/100 %
+ 81/100  [===== Uncertainty Quantification ======]  -   81/100 %
+ 82/100  [===== Uncertainty Quantification ======]  -   82/100 %
+ 83/100  [===== Uncertainty Quantification ======]  -   83/100 %
+ 84/100  [===== Uncertainty Quantification ======]  -   84/100 %
+ 85/100  [===== Uncertainty Quantification ======]  -   85/100 %
+ 86/100  [===== Uncertainty Quantification ======]  -   86/100 %
+ 87/100  [===== Uncertainty Quantification ======]  -   87/100 %
+ 88/100  [===== Uncertainty Quantification ======]  -   88/100 %
+ 89/100  [===== Uncertainty Quantification ======]  -   89/100 %
+ 90/100  [===== Uncertainty Quantification ======]  -   90/100 %
+ 91/100  [===== Uncertainty Quantification ======]  -   91/100 %
+ 92/100  [===== Uncertainty Quantification ======]  -   92/100 %
+ 93/100  [===== Uncertainty Quantification ======]  -   93/100 %
+ 94/100  [===== Uncertainty Quantification ======]  -   94/100 %
+ 95/100  [===== Uncertainty Quantification ======]  -   95/100 %
+ 96/100  [===== Uncertainty Quantification ======]  -   96/100 %
+ 97/100  [===== Uncertainty Quantification ======]  -   97/100 %
+ 98/100  [===== Uncertainty Quantification ======]  -   98/100 %
+ 99/100  [===== Uncertainty Quantification ======]  -   99/100 %
+100/100  [===== Uncertainty Quantification ======]  -  100/100 %
+[2023-03-09 12:43:47] x_label is:  
+Setting ylimits...: -170 70
+Setting xticks with: ['1/18/2004', '1/20/2004', '1/22/2004', '1/24/2004', '1/26/2004']
+file_name inside: figures\storm_1min_36_1h_symh_uq.pdf
+[2023-03-09 12:43:47] Saving figure to file: figures\storm_1min_36_1h_symh_uq.pdf 
+len(sys.argv): 3
+Starting hour: 1 ending hour: 1
+Starting the training for start_hour: 1 end_hour: 2
+Running testing for h = 1 hour ahead
+[2023-03-09 12:44:38] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:44:38] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:44:38] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:44:45] x_label is:  
+Setting ylimits...: -170 70
+Setting xticks with: ['1/18/2004', '1/20/2004', '1/22/2004', '1/24/2004', '1/26/2004']
+file_name inside: figures\storm_1min_36_1h_symh_uq.pdf
+[2023-03-09 12:44:45] Saving figure to file: figures\storm_1min_36_1h_symh_uq.pdf 
+len(sys.argv): 3
+Starting hour: 1 ending hour: 1
+Starting the training for start_hour: 1 end_hour: 2
+Running testing for h = 1 hour ahead
+[2023-03-09 12:46:41] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:46:42] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:46:42] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:46:48] x_label is:  
+Starting hour: 2 ending hour: 2
+Starting the training for start_hour: 2 end_hour: 3
+Running testing for h = 2 hour ahead
+[2023-03-09 12:46:52] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:46:52] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:46:52] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:46:58] x_label is:  
+Starting hour: 3 ending hour: 3
+Starting the training for start_hour: 3 end_hour: 4
+Running testing for h = 3 hour ahead
+[2023-03-09 12:47:02] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:47:02] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:47:02] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:47:08] x_label is:  
+Starting hour: 4 ending hour: 4
+Starting the training for start_hour: 4 end_hour: 5
+Running testing for h = 4 hour ahead
+[2023-03-09 12:47:11] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:47:12] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:47:12] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:47:18] x_label is:  
+Starting hour: 5 ending hour: 5
+Starting the training for start_hour: 5 end_hour: 6
+Running testing for h = 5 hour ahead
+[2023-03-09 12:47:21] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:47:22] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:47:22] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:47:28] x_label is:  
+Starting hour: 6 ending hour: 6
+Starting the training for start_hour: 6 end_hour: 7
+Running testing for h = 6 hour ahead
+[2023-03-09 12:47:31] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:47:31] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:47:31] end_date_ts: 2004-02-29 17:50:00 
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:47:38] x_label is:  
+Starting hour: 1 ending hour: 1
+Starting the training for start_hour: 1
+Running testing for h = 1 hour ahead
+[2023-03-09 12:48:05] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:48:05] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:48:05] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:48:12] x_label is:  
+Starting hour: 2 ending hour: 2
+Starting the training for start_hour: 2
+Running testing for h = 2 hour ahead
+[2023-03-09 12:48:14] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:48:15] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:48:15] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:48:21] x_label is:  
+Starting hour: 3 ending hour: 3
+Starting the training for start_hour: 3
+Running testing for h = 3 hour ahead
+[2023-03-09 12:48:23] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:48:24] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:48:24] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:48:30] x_label is:  
+Starting hour: 4 ending hour: 4
+Starting the training for start_hour: 4
+Running testing for h = 4 hour ahead
+[2023-03-09 12:48:32] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:48:32] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:48:32] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:48:38] x_label is:  
+Starting hour: 5 ending hour: 5
+Starting the training for start_hour: 5
+Running testing for h = 5 hour ahead
+[2023-03-09 12:48:41] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:48:41] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:48:41] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:48:47] x_label is:  
+Starting hour: 6 ending hour: 6
+Starting the training for start_hour: 6
+Running testing for h = 6 hour ahead
+[2023-03-09 12:48:50] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:48:50] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:48:50] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:48:56] x_label is:  
+Starting the training for start_hour: 1
+Running testing for h = 1 hour ahead
+[2023-03-09 12:52:11] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:11] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:11] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:18] x_label is:  
+Running testing for h = 2 hour ahead
+[2023-03-09 12:52:20] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:20] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:20] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:22] x_label is:  
+Running testing for h = 3 hour ahead
+[2023-03-09 12:52:24] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:24] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:24] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:25] x_label is:  
+Running testing for h = 4 hour ahead
+[2023-03-09 12:52:27] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:27] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:27] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:29] x_label is:  
+Running testing for h = 5 hour ahead
+[2023-03-09 12:52:31] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:31] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:31] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:32] x_label is:  
+Running testing for h = 6 hour ahead
+[2023-03-09 12:52:34] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:34] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:34] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:36] x_label is:  
+Starting the training for start_hour: 2
+Running testing for h = 2 hour ahead
+[2023-03-09 12:52:38] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:38] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:38] end_date_ts: 2004-02-29 17:50:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:44] x_label is:  
+Running testing for h = 3 hour ahead
+[2023-03-09 12:52:46] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:46] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:46] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:48] x_label is:  
+Running testing for h = 4 hour ahead
+[2023-03-09 12:52:50] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:50] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:50] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:51] x_label is:  
+Running testing for h = 5 hour ahead
+[2023-03-09 12:52:53] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:53] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:53] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:55] x_label is:  
+Running testing for h = 6 hour ahead
+[2023-03-09 12:52:56] 2004-01-18 2004-1-18 2004-01-27 2004-1-27 
+[2023-03-09 12:52:56] start_date_ts: 2004-01-18 00:00:00 
+[2023-03-09 12:52:56] end_date_ts: 2004-01-27 18:05:00 
+Running prediction..
+Uncertainty Quantification, please wait while in progress..
+[2023-03-09 12:52:58] x_label is:  
