@@ -120,8 +120,12 @@ def relative_root_mean_squared_error(true, pred):
     rrmse_loss = np.sqrt(squared_error)
     return rrmse_loss
 
-def test(start_hour, end_hour,col_name='SYM_H', res=''):
-    print('Starting the training for start_hour:', start_hour)
+def test(start_hour, end_hour, res=''):
+    col_name='SYM_H'
+    if res == '':
+        print('1-Minute Resolution: Starting the training for start_hour:', start_hour)
+    else:
+        print('5-Minute Resolution: Starting the training for start_hour:', start_hour)
     columns_names=['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM','BZ_GSM','Speed','Proton_Density','Flow_pressure','Electric_field',col_name]    
     storms_data = pd.read_csv('data'+os.sep  +'storms_list.csv')
     storm_years = list(storms_data['Start date'].values) 
