@@ -43,9 +43,9 @@ the SYHMnet tool/package includes the following folders and files:
 ReadMe.txt                    - this ReadMe file.
 requirements.txt              - includes Python required packages for Python version 3.9.7.
 models_storms_1min            - includes the models for 1-minute resolution. 
-models_storms_1min            - includes the models for 5-minute resolution. 
+models_storms_5min            - includes the models for 5-minute resolution. 
 logs                          - includes the logging information.
-data                          - includes a list of SYHMnet data sets that can be used for training and prediction.
+data                          - includes a list of SYHMnet data sets that can be used for training, validation, and prediction.
 results                       - will include the prediction result file(s).
 figures                       - will include the prediction result figures.
  								
