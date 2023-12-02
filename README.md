@@ -48,7 +48,7 @@ This notebook is Binder enabled and can be run on [mybinder.org](https://mybinde
 ### run_SYMHnet.ipynb (Jupyter Notebook for SYMHnet)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ccsc-tools/SYMHnet/HEAD?labpath=run_SYMHnet.ipynb)
 
-** Binder Notes **
+* Binder Notes *
 
 * Starting Binder might take some time to create and start the image.
 
@@ -62,7 +62,8 @@ Requires Python==3.9.x (was trained and tested on 3.9.7)
 
 * Run pip install -r requirements.txt (the file is provided within the package)<br>
 * You may also use the environment.yml file to create conda virtual environment with all required packages by exeucting the following command:<br>
-``` conda env create -f environment.yml 
+```
+conda env create -f environment.yml 
 ```
 * Manually install the following packages and specified versions:
 
