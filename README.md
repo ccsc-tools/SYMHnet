@@ -1,7 +1,7 @@
 # Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification
 
 ## Author
-### Yasser Abduallah, Jason T. L. Wang, Khalid A. Alobaid, Haimin Wang1, Vania K. Jordanova, Vasyl Yurchyshyn, Huseyin Cavus, and  Ju Jing
+### Yasser Abduallah, Jason T. L. Wang, Khalid A. Alobaid, Haimin Wang1, Vania K. Jordanova, Vasyl Yurchyshyn, Huseyin Cavus, and Ju Jing
 
 ## Abstract
 We propose a novel deep learning framework, named SYMHnet, which employs a graph neural network and 
@@ -55,6 +55,12 @@ __Binder Notes__
 * The execution time in Binder varies based on the availability of resources. The average time to run the notebook is 10-15 minutes, but it could be more.
 
 * Binder does not provide GPU docker images. 
+
+* It is recommended to download or clone the GitHub repository and run the tool locally. To clone the repository:<br>
+```
+git clone git@github.com:ccsc-tools/SYMHnet.git
+``` <br>
+Direct download like is https://github.com/ccsc-tools/SYMHnet/archive/refs/heads/main.zip
 
 
 ## Installation on local machine
