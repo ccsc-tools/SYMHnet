@@ -59,8 +59,9 @@ __Binder Notes__
 * It is recommended to download or clone the GitHub repository and run the tool locally. To clone the repository:<br>
 ```
 git clone git@github.com:ccsc-tools/SYMHnet.git
-``` <br>
-Direct download like is https://github.com/ccsc-tools/SYMHnet/archive/refs/heads/main.zip
+```
+
+Direct download link is https://github.com/ccsc-tools/SYMHnet/archive/refs/heads/main.zip
 
 
 ## Installation on local machine
