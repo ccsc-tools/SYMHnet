@@ -1,12 +1,29 @@
+'''
+ (c) Copyright 2023
+ All rights reserved
+ Programs written by Yasser Abduallah
+ Department of Computer Science
+ New Jersey Institute of Technology
+ University Heights, Newark, NJ 07102, USA
+
+ Permission to use, copy, modify, and distribute this
+ software and its documentation for any purpose and without
+ fee is hereby granted, provided that this copyright
+ notice appears in all copies. Programmer(s) makes no
+ representations about the suitability of this
+ software for any purpose.  It is provided "as is" without
+ express or implied warranty.
+
+ @author: Yasser Abduallah
+'''
+import warnings
+warnings.filterwarnings("ignore")
 import pandas as pd
 import numpy as np
 import os
-import typing
 import matplotlib.pyplot as plt
 
-import warnings
-warnings.filterwarnings("ignore")
-import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 try:
@@ -14,119 +31,28 @@ try:
 except Exception as e:
     print('')
     
-from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
-from math import sqrt
 from datetime import datetime, timedelta
-from scipy.stats import pearsonr
-from sklearn.metrics import r2_score
 from tensorflow import keras
-from tensorflow.keras import layers
 
 from SYMHnet_utils import *
-# from SYMHnet_model import SYMHnetModel
 from SYMHnet_dataset import * 
 
 num_hours = 1
 interval_type = 'hourly'
 epochs = 100
-prev_weights = None
 w_dir=None
-supported_cols = ['SYM_H','SYMH']
-stats_only=False
-rmse_all = -1000
-verbose  = True
-model_verbose = 2
-figsize=(7,2.5)
-def format_date_filter(d):
-    d = str(d)
-    tokens = str(d).split('-')
-    if '/' in d:
-        tokens = str(d).split('/')
-    a = []
-    for t in tokens:
-        if t.startswith('0'):
-            t = t[1:]
-        a.append(t)
-    # print('-'.join(a))
-    return '-'.join(a)
+is_small=True
+verbose  = False
+figsize=(7,3)
+resolution_minutes=1
+view_type = ''
+def test(start_hour, end_hour,col_name, res='',is_small=is_small, do_pred_error=False):
+    global figsize
+    if is_small:
+        figsize=(5,2.2)
 
-def get_range(d1,d2):
-    tokens1=d1.split('-')
-    if '/' in d1:
-        tokens1 = d1.split('/')
-        
-    tokens2=d2.split('-')
-    if '/' in d2:
-        tokens2 = d2.split('/')
-    year1=int(tokens1[0])
-    month1=int(tokens1[1])
-    day1=int(tokens1[2])
-    
-    year2=int(tokens1[0])
-    month2=int(tokens2[1])
-    day2=int(tokens2[2])
-    
-    t1 = datetime(year1,month1,day1,0,0,0)
-    t2 = datetime(year2,month2,day2,23,59,59)
-    a=[]
-    c_time = t1 
-    while c_time <= t2:
-        t = str(c_time.year) + '-' + str(c_time.month) + '-'  + str(c_time.day) +'-'
-        # print(t)
-        a.append(t)
-        c_time = c_time + timedelta(days=1)
-    return a
-
-def get_num(n):
-    n = str(n) 
-    if n.startswith('0'):
-        return n[1:]
-    return n
-
-def get_range_from_data(data):
-    rng = []
-    for r in range(len(data)):
-        s_d = data['Start date'][r]
-        e_d = data['End date'][r] 
-        t1 = format_date_filter(s_d)
-        t2 =  format_date_filter(e_d)
-        rng.extend(get_range(t1,t2))        
-        # print('training range:', value)
-    rng = list(set(rng))
-    rng.sort()
-    return rng
-
-def get_r2(y_true, y_pred):
-    mean_val = np.array(y_true).mean()
-    s_true = 0
-    s_predict = 0
-    for i in range(len(y_true)):
-        s_predict  = s_predict + math.pow( (y_true[i] - y_pred[i]),2)
-        s_true = s_true + math.pow((y_true[i]  - mean_val),2)
-    return round(1 - (s_predict/s_true),4)
-
-def get_rmse(y_true, y_pred):
-    s = 0
-    si = 0
-    for i in range(len(y_true)):
-        s = s + math.pow( (y_true[i] - y_pred[i]),2)
-    s = math.sqrt(s/len(y_true))
-    return round(s,4)  
-def relative_root_mean_squared_error(true, pred):
-    num = np.sum(np.square(true - pred))
-    den = np.sum(np.square(pred))
-    squared_error = num/den
-    rrmse_loss = np.sqrt(squared_error)
-    return rrmse_loss
-
-def test(start_hour, end_hour, res=''):
-    col_name='SYM_H'
-    if res == '':
-        print('1-Minute Resolution: Starting the training for start_hour:', start_hour)
-    else:
-        print('5-Minute Resolution: Starting the training for start_hour:', start_hour)
-    columns_names=['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM','BZ_GSM','Speed','Proton_Density','Flow_pressure','Electric_field',col_name]    
+    log('Starting the training for start_hour:', start_hour, 'end_hour:', end_hour )
     storms_data = pd.read_csv('data'+os.sep  +'storms_list.csv')
     storm_years = list(storms_data['Start date'].values) 
     storm_years.extend(list(storms_data['End date'].values))
@@ -142,8 +68,10 @@ def test(start_hour, end_hour, res=''):
     train_storm_years = [int(format_date_filter(s).split('-')[0]) for s in train_storm_years]
     train_storm_years = list(set(train_storm_years))
     train_storm_years.sort()
+    log('train_years:', train_storm_years)
     training_range = get_range_from_data(train_storms)
     
+    log('training range:', training_range)
     
     validation_storms = storms_data.loc[storms_data['Storm no.'].isin([s for s in range(21,26)])].reset_index()
     val_storm_years = list(validation_storms['Start date'].values) 
@@ -151,15 +79,19 @@ def test(start_hour, end_hour, res=''):
     val_storm_years = [int(format_date_filter(s).split('-')[0]) for s in val_storm_years]
     val_storm_years = list(set(val_storm_years))
     val_storm_years.sort()
+    log('val_years:', val_storm_years)
     validation_range = get_range_from_data(validation_storms)
+    log('validation_range:', validation_range)
     test_storms = storms_data.loc[storms_data['Storm no.']>= 26].reset_index()
     test_range = get_range_from_data(test_storms)
+    log('test_range:', test_range)
     
     test_storm_years = list(test_storms['Start date'].values) 
     test_storm_years.extend(list(test_storms['End date'].values))
     test_storm_years = [int(format_date_filter(s).split('-')[0]) for s in test_storm_years]
     test_storm_years = list(set(test_storm_years))
     test_storm_years.sort()
+    log('test_years:', test_storm_years)
         
     for k in range(start_hour,end_hour):
         postfix = res 
@@ -170,7 +102,7 @@ def test(start_hour, end_hour, res=''):
         data_dir_to_save = 'data' + os.sep + 'solar_wind_symh' + postfix + os.sep + str(k) + 'h'
         os.makedirs(data_dir_to_save, exist_ok=True)
         epochs = 3
-        print('Running testing for h =', k, 'hour ahead')
+        print('Running training for h =', k, 'hour ahead')
         num_hours = k
         dataset = SYMHnetDataset(num_hours=num_hours, columns_names=columns_names)
         rows, cols = (len(columns_names), len(columns_names))
@@ -178,8 +110,7 @@ def test(start_hour, end_hour, res=''):
         route_distances = np.array(arr)
 
                     
-        data_dir_to_save = 'data' + os.sep + 'solar_wind_symh' + postfix + os.sep + str(k) + 'h'
-        # training_range.extend( validation_range)
+        data_dir_to_save = 'data' + os.sep + 'solar_wind_symh' + postfix + os.sep + str(k) + 'h' +  os.sep + str(storm_to_test) 
         training_file = data_dir_to_save + os.sep + 'training_data_' + str(k) + 'h.csv'
         train_data =  get_data_from_file(training_file, verbose=verbose)
         storms_file = data_dir_to_save + os.sep + 'storms_data_' + str(k) + 'h.csv'
@@ -187,16 +118,18 @@ def test(start_hour, end_hour, res=''):
         d = [train_data, storms_data]
         validation_file = data_dir_to_save + os.sep + 'validation_data_' + str(k) + 'h.csv'
         validation_data = get_data_from_file(validation_file, verbose=verbose)
+
+        log('len(train_data):', len(train_data), verbose=verbose)
         
         train_array = train_data[columns_names].to_numpy()
         validation_array = validation_data[columns_names].to_numpy()
+        log('len(train_array):', len(train_array), verbose=verbose)
         
         train_dataset, val_dataset = (
             dataset.create_tf_dataset(data_array)
             for data_array in [train_array, validation_array]
         )
-        if not 'level_0' in  test_storms.columns:
-            test_storms = test_storms.reset_index()
+        test_storms = test_storms.reset_index()
             
         for itr in range(1):
             if res == '':
@@ -205,32 +138,48 @@ def test(start_hour, end_hour, res=''):
                 res = '5min'
             w_dir = 'models_storms_' + res  +os.sep  + str(num_hours) + 'h_' + str(col_name).replace('_','').lower()
             model = keras.models.load_model(w_dir + os.sep + 'model_weights_full')
-
             ylimit_min=None 
             ylimit_max = None            
-            for i in range(len(test_storms)):
-                storm_num = (i+26)
+            if True:
+                storm_num = storm_to_test
+                i = storm_to_test - 26
                 if res == '':
                     res = '1min'
                 result_data_set_file = 'results_datasets' + os.sep + 'storm_num_' + str(storm_num) + os.sep + res 
                 os.makedirs(result_data_set_file, exist_ok=True) 
-                result_data_set_file = result_data_set_file + os.sep + str(start_hour) + 'h_uq_training.csv'
-                if  storm_num in [36]:
-                        ylimit_min=-170
-                        ylimit_max=70  
-                        xticksvalues=['1/18/2004' ,'1/20/2004', '1/22/2004', '1/24/2004' ,'1/26/2004']
-                        if storm_num in [37]:
-                            ylimit_min=None
-                            ylimit_max=None
-                else:
-                    continue                                     
+                result_data_set_file = result_data_set_file + os.sep + str(starting_hour) + 'h_uq_training.csv'
                 storm_start = test_storms['Start date'][i]
                 storm_end = test_storms['End date'][i]
+                
+
                 t1 = format_date_filter(storm_start)
                 t2 =  format_date_filter(storm_end)
-                log(storm_start, t1, storm_end,t2)
+                log('t1', t1)
+                log('values-->', storm_start, t1, storm_end,t2)
                 value = get_range(t1,t2)
+                log('value:', value)
+                if '_lv' in view_type :
+                    if storm_to_test == 36:
+                        if is_intense:
+                            value = ['2004-1-22-' + str(n) for n in range(9,21)]
+                        else:
+                            value = ['2004-1-18-' + str(n) for n in range(0,7)]
+                    if storm_to_test == 37:
+                        if is_intense:
+                            value = ['2004-11-7-' + str(n) for n in range(12,24)]
+                            for n in range(0,15):
+                                value.append('2004-11-8-' + str(n))
+                        else:
+                            value = ['2004-11-7-' + str(n) for n in range(0,3)]                      
+                log('value 2:', value)
                 s_data = storms_data.loc[storms_data['Timestamp'].str.contains('|'.join(value)) ]
+
+                log(storm_num,'storms_data size:', len(storms_data), 's_data size:', len(s_data))
+                log(storm_num,'min:',np.array(s_data['SYM_H']).min(),'max:', np.array(s_data['SYM_H']).max())
+                max_val = np.array(s_data['SYM_H']).max()
+                min_val = np.array(s_data['SYM_H']).min()
+                log(storm_num,'range:', value)
+                
                 if 'level_0' in s_data.columns:
                     s_data = s_data.drop('level_0',axis=1)
                 
@@ -244,10 +193,9 @@ def test(start_hour, end_hour, res=''):
                 start_date_ts = datetime(int(start_date[0]), int(start_date[1]), int(start_date[2]),0,0,0)
                 end_date_ts = datetime(int(end_date[0]), int(end_date[1]), int(end_date[2]),0,0,0)
                 
-                log('start_date_ts:', start_date_ts)
                 test_data = s_data
                 current_date = start_date_ts
-                minutes = 5
+                minutes = resolution_minutes
                 if res == '':
                     minutes = 1
                 for c in range(len(test_data)-1):
@@ -264,78 +212,155 @@ def test(start_hour, end_hour, res=''):
             
                 x_test, y = next(test_dataset.as_numpy_iterator())
                 col_index = len(columns_names)-1
-                for l in range(1):
-                    print('Running prediction..')
-                    y_pred = model.predict(x_test)
-            
-                    y_preds = y_pred[:, 0, col_index]
-                    y_test = y[:, 0, col_index]        
-                    predictions_ft = uncertainty(model, x_test,col_index, N=100, verbose=False)
-                    
-                    y_preds = predictions_ft[0]
-            
-                    corr, _ = pearsonr( y_preds, y_test)
-                    corr = round(corr,4)
-                    rmse = round(sqrt(mean_squared_error(y_test, y_preds)),4)
-                    r2 = round(r2_score(y_test, y_preds),4)
-                    r2_calc = round(get_r2(y_test,y_preds),4)
-                    mae= round(mean_absolute_error(y_test,y_preds),4) 
-                    RMSE = round(rmse,4)
-                    rrmse = round(relative_root_mean_squared_error(y_test,y_preds),4)
-                    r = np.corrcoef(y_test, y_preds)
-                    w_dir = 'models_storms_' + res  +os.sep  + str(num_hours) + 'h_' + str(col_name).replace('_','').lower() 
-                    handler = open(result_data_set_file,'w')
-                    handler.write('Date,Actual,Prediction,Aleatoric,Epistemic\n')
-                    for z in range(len(y_test)):
-                        if z == 0:
-                            handler.write(str(ax_dates[z]) + ',' +  str(y_test[z] ) + ',' + str(y_preds[z]) + ',' + str(predictions_ft[1]) + ',' + str(predictions_ft[2]) + '\n')
-                        else:
-                            handler.write(str(ax_dates[z]) + ','+ str(y_test[z] ) + ',' + str(y_preds[z]) + '\n')
-                    handler.flush()
-                    handler.close() 
+                y_pred = model.predict(x_test)
+        
+                y_preds = y_pred[:, 0, col_index]
+                y_test = y[:, 0, col_index]        
+                predictions_ft = uncertainty(model, x_test,col_index, N=numberOfSamples, verbose=verbose)
+                
+                y_preds = predictions_ft[0]
+                w_dir = 'models_storms_' + res  +os.sep  + str(num_hours) + 'h_' + str(col_name).replace('_','').lower() 
+                handler = open(result_data_set_file,'w')
+                log('saving to:', result_data_set_file)
+                handler.write('Date,Actual,Prediction,Aleatoric,Epistemic\n')
+                for z in range(len(y_test)):
+                    if z == 0:
+                        handler.write(str(ax_dates[z]) + ',' +  str(y_test[z] ) + ',' + str(y_preds[z]) + ',' + str(predictions_ft[1]) + ',' + str(predictions_ft[2]) + '\n')
+                    else:
+                        handler.write(str(ax_dates[z]) + ','+ str(y_test[z] ) + ',' + str(y_preds[z]) + '\n')
+                handler.flush()
+                handler.close() 
                 file_name_aleatoric = 'figures' + os.sep +'storm_' +str(res).replace('_','') + '_' + str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_aleatoric.pdf'
                 file_name_epistemic ='figures' + os.sep + 'storm_' + str(res).replace('_','') + '_' +str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_epistemic.pdf'
-                file_name_uq ='figures' + os.sep + 'storm_' +str(res).replace('_','') + '_' + str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_uq.pdf'
-                              
-                plot_figure(ax_dates,y_test,predictions_ft[0],predictions_ft[1],num_hours,label=str(col_name).replace('_','-') + ' index',
-                            file_name=file_name_uq ,wider_size=False,figsize = figsize,
-                            interval=interval_type[0],uncertainty_label='Aleatoric Uncertainty', fill_graph=True,
-                            # uncertainty_color='#aabbff',
-                            x_labels=True,
-                            x_label='',
-                            scale_down=False,
-                            uncertainty_color='black',
-                            prediction_color='yellow',
-                            observation_color='#FF5050',
+                file_name_uq ='figures' + os.sep + 'storm_' +str(res).replace('_','') + '_' + str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_uq' + view_type +'.pdf'
+                l = len(ax_dates)
+                log('dates-->', ax_dates[0],ax_dates[(l//4)], ax_dates[(l//4)*2], ax_dates[-1] )
+                y_label = str(col_name).replace('_','-') + ' (nT)'
+                yticks = None
+                if is_small and num_hours in [2,4,6]:
+                    y_label = ''
+                    yticks = []
+                pred_errors = None
+                fill_graph=True
+                if do_pred_error:
+                    fill_graph=False
+                    pred_errors= []
+                    for n in range(len(y_test)):  
+                        pred_errors.append(math.floor(((y_test[n] - predictions_ft[0][n]))))
+                    if len(pred_errors) > 0:
+                        file_name_uq = file_name_uq.replace(".pdf","_pe.pdf")
+                    log('Preds stats -->', storm_to_test,res, k, np.array(pred_errors).max() , np.array(pred_errors).min())
+                xticks = [ ax_dates[0],ax_dates[(l//3)], ax_dates[(l//3)*2], ax_dates[-1]]
+                if storm_num in [28, 31, 33,40,42]:
+                    ylimit_min=-550
+                    ylimit_max=150
+                    xticksvalues = [str(t1) for t1 in xticks]
+                    if storm_num == 33:
+                        ylimit_min=-550
+                        ylimi_max = 150
+                        xticksvalues=['03/26/01' ,'03/29/01', '04/01/01', '04/04/01']
+                    if storm_num == 28:
+                        ylimit_min = int(min_val) - 50
+                        ylimit_max = int(max_val) + 50 
+                        xticksvalues=['01/09/99' ,'09/07/99', '09/13/99', '09/19/99'] 
+                    if storm_num == 31:
+                        ylimit_min = int(min_val) - 50
+                        ylimit_max = int(max_val) + 50 
+                        xticksvalues=['04/02/00' ,'04/05/00', '04/08/00', '04/11/00']  
+                    if storm_num == 40:
+                        ylimit_min = int(min_val) - 50
+                        ylimit_max = int(max_val) + 50 
+                        xticksvalues=['06/26/13' ,'06/29/13', '07/02/13', '07/05/13']  
+                    if storm_num == 42:
+                        ylimit_min = -275
+                        ylimit_max = int(max_val) + 50 
+                        xticksvalues=['08/22/18' ,'08/26/18', '08/30/18', '09/03/18']  
+                    else:
+                        ylimit_min = int(min_val) - 50
+                        ylimit_max = int(max_val) + 50          
+                elif  storm_num in [36]:
+                        ylimit_min=-170
+                        ylimit_max=70  
+                        xticksvalues=['01/18/04' ,'01/21/04', '01/24/04', '01/27/04']                       
+                        if '_lv' in view_type :
+                            if is_intense:
+                                xticksvalues=['01/22/04 09:00' ,'01/22/04 12:00', '01/22/04 15:00', '01/22/04 18:00']
+                            else:
+                                xticksvalues=['01/18/04 0:00' ,'01/18/04 02:00', '01/18/04 04:00', '01/18/04 06:00']
+
+                elif  storm_num in [37]:
+                        ylimit_min=-170
+                        ylimit_max=70  
+                        xticksvalues=['11/4/2004' ,'11/7/2004', '11/11/2004', '11/14/2004']   
+                        xticksvalues=['11/04/04' ,'11/07/04', '11/10/04', '11/13/04'] 
+                        if '_lv' in view_type :
+                            if is_intense:
+                                xticksvalues=['11/07/04 21:00' ,'11/08/04 03:00', '11/08/04 09:00', '11/08/04 15:00']                                
+                            else:
+                                xticksvalues=['11/07/04 00:00' ,'11/07/04 02:00', '11/07/04 04:00', '11/07/04 06:00']                                          
+                        if storm_num in [37]:
+                            ylimit_min=-450
+                            ylimit_max=150                
+                log('xticks in test:', xticks)
+                ylimit_min = -450
+                ylimit_max = 150
+                ytickvalues = [-400, -300, -200, -100, 0, 100]                
+
+                plot_figure(storm_to_test, resolution_minutes,view_type,
+                            ax_dates,y_test,y_preds,
+                            predictions_ft[1],
+                            num_hours,
+                            label=y_label,
+                            file_name=file_name_uq ,
+                            figsize = figsize,
+                            fill_graph=fill_graph,
                             xticksvalues=xticksvalues,
+                            xticks = xticks,
                             y_preds_var1=predictions_ft[2],
                             ylimit_min=ylimit_min,
                             ylimit_max=ylimit_max,
-                            uncertainty_margin=4.5,
-                            uncertainty_ep_margin=1.2                                                 
+                            yticks=yticks,
+                            prediction_errors=pred_errors
                             )
     
 if __name__ == '__main__':
-    
-    col_name = str('SYM_H').upper()
-    col_name = col_name.replace('_','')
-    col_name = col_name[:-1] +'_' + col_name[-1]
-    if not col_name in supported_cols:
-        print('Invalid column name:', col_name,'must be one of:', supported_cols)
+    if len(sys.argv) < 5:
+        print('You must provide all required input parameters\nUsage:')
+        print('SYMHnet_test <storm to test: 26 to 42>  <resolution type: 1|5 > <prediction error True|False> <local view True|False>')
+        print('For example to test storm 37 for 5-minute resolution with prediction error for local view:')
+        print('SYMHnet_test 37 5 True True')
         exit()
+    storm_to_test = int(float(int(sys.argv[1])))
+    if not storm_to_test in supported_test_storms:
+        print('Invalid or unsupported test storm:', storm_to_test)
+        print('Supported storms are:', supported_test_storms)
+        exit()
+    resolution_minutes = int(float(int(sys.argv[2])))
+    if not resolution_minutes in [1,5]:
+        print('Invalid resolution:', resolution_minutes)
+        print('Supported resolution: 1 or 5')
+        exit()
+        
+    do_pred_error= boolean(sys.argv[3])
+    view_type_bool= boolean(str(sys.argv[4]).strip().lower())
+    if not view_type_bool :
+        view_type = '';
+    else:
+        view_type = '_lv';
     res = ''
-    if float(int(sys.argv[1])) == 1:
+    if resolution_minutes == 1:
         res = ''
+        resolution_minutes = 1
     else:
         res = '_5min'
+        resolution_minutes = 5
     starting_hour = 1
-    ending_hour = 7
-    hours_list = []
-    hours_list = list(sys.argv[2].split(','))
-    hours_list = [int(h) for h in hours_list]
+    ending_hour = 2
+    hours_list = [1,2]
+    print('Start testing hour:', starting_hour, 'and hour:', ending_hour-1)
     for h in hours_list:
         starting_hour = h
-        ending_hour = h + 1
-        # print('Starting hour:', starting_hour, 'ending hour:', ending_hour-1)
-        test(starting_hour, ending_hour,col_name,res=res) 
+        ending_hour = h + 1     
+        test(starting_hour, ending_hour,col_name,res=res,is_small=is_small, do_pred_error=do_pred_error)         
     plt.show()   
+

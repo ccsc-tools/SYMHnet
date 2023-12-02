@@ -50,7 +50,7 @@ This notebook is Binder enabled and can be run on [mybinder.org](https://mybinde
 
 __Binder Notes__
 
-* Starting Binder might take some time to create and start the image.
+* Starting Binder might take some time to create and start the image because it is a free docker image and depends on the resources availability.
 
 * The execution time in Binder varies based on the availability of resources. The average time to run the notebook is 10-15 minutes, but it could be more.
 
@@ -76,12 +76,15 @@ conda env create -f environment.yml
 
 |Library | Version   | Description  |
 |---|---|---|
+| joblib | 1.3.1 | File compression|
 |keras| 2.8.0 | Deep learning API|
 | matplotlib | 3.7.2 | Graphical and visualization tool|
 |numpy| 1.25.0 | Array manipulation|
 | pandas| 1.5.1 | Data loading, analysis, and manipulation tool|
 |scikit-learn| 1.3.0 | Machine learning tool API|
+| scipy | 1.11.1 | Mathematics and science tools |
 | seaborn | 0.12.2 | Figures visualization look and feel|
 | tensorboard| 2.8.0| Provides the visualization and tooling needed for machine learning|
 | tensorflow| 2.8.0| Machine learning platform tool |
 | tensorflow-gpu| 2.8.0| Deep learning tool for high performance computation |
+| tensorflow-probability | 0.14.1 | Statistical analysist tool| 

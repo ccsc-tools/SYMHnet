@@ -1,3 +1,22 @@
+'''
+ (c) Copyright 2023
+ All rights reserved
+ Programs written by Yasser Abduallah
+ Department of Computer Science
+ New Jersey Institute of Technology
+ University Heights, Newark, NJ 07102, USA
+
+ Permission to use, copy, modify, and distribute this
+ software and its documentation for any purpose and without
+ fee is hereby granted, provided that this copyright
+ notice appears in all copies. Programmer(s) makes no
+ representations about the suitability of this
+ software for any purpose.  It is provided "as is" without
+ express or implied warranty.
+
+ @author: Yasser Abduallah
+'''
+
 from __future__ import print_function
 import warnings
 warnings.filterwarnings("ignore")
@@ -16,24 +35,16 @@ import numpy as np
 import pandas as pd 
 import sys
 import csv
-import pandas as pd 
-import sys
-import csv
+
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
-import matplotlib.ticker as mticker
-import numpy as np 
-import sys 
-import os 
+import matplotlib.ticker as mticker 
 import matplotlib
 import pickle
 
-import matplotlib.pyplot as plt
-import numpy as np
 import seaborn as sns
-import os
-from datetime import datetime, timedelta
+
 import argparse
 import time
 from time import sleep
@@ -42,25 +53,32 @@ from sklearn.metrics import mean_squared_error
 import math
 from math import sqrt
 from scipy.stats import pearsonr
-from sklearn.metrics import r2_score
 import random
 from tensorflow import keras
-from sklearn.preprocessing import StandardScaler
 import tensorflow.compat.v2 as tf
 tf.enable_v2_behavior()
 from tensorflow.keras import layers, models
 import tensorflow_probability as tfp
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras import regularizers
 from sklearn.model_selection import train_test_split
 verbose = False 
+
 tfd = tfp.distributions
 
-columns_names=['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM','BZ_GSM','Speed','Proton_Density','Flow_pressure','Electric_field','SYM_H']
+col_name = str('SYM_H').upper()
+col_name = col_name.replace('_','')
+col_name = col_name[:-1] +'_' + col_name[-1]
 
+numberOfSamples=100
+is_intense = True
+uncertainty_margin=1
+uncertainty_ep_margin=1
+
+supported_cols = ['SYM_H','SYMH']
+supported_test_storms = [i for i in range(26,43)]
+columns_names=['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM','BZ_GSM','Speed','Proton_Density','Flow_pressure','Electric_field',col_name]    
 features = columns_names
 features1 = ['Scalar_B', 'BZ_GSE', 'BZ_GSM', 'SW_Plasma_Temperature', 'SW_Plasma_Speed', 'Flow_pressure', 'E_elecrtric_field']
-sym_col = 'Kp_index'
+sym_col = 'SYM_H'
 fill_values = [999.9, 999.9, 999.9, 999.9, 999.9, 999.9, 999.9, 9999999, 999.9, 9999, 999.9, 999.9, 99.99, 999.99]
 fill_values = [999.9, 999.9, 999.9, 999.9, 999.9, 999.9, 9999999, 999.9, 9999, 999.9, 999.9, 99.99, 999.99,99.99]
 
@@ -88,8 +106,6 @@ def create_log_file(dir_name='logs'):
         log_file = 'logs/run_' + str(c_date.month) + '-' + str(c_date.day) + '-' + str(c_date.year) + '.log'
     log_handler = open(log_file, 'a')
     sys.stdout = Logger(log_handler)  
-    # log('')
-    # log('********************************  Executing Python program:', sys.argv[0].split(os.sep)[-1], '  ********************************')         
 
 
 def set_logging(dir_name='logs'):
@@ -518,98 +534,176 @@ def reshape_y_data(data):
 
 
 
-
-def plot_figure(x, y_test, y_preds_mean, y_preds_var, 
-                num_hours, label='Kp*10 index',
-                file_name=None, block=True, do_sdv=True, process_y_test=False,
+def plot_figure(storm_to_test, 
+                resolution_minutes,
+                view_type,
+                x, 
+                y_test, 
+                y_preds_mean, 
+                y_preds_var, 
+                num_hours, 
+                label='',
+                file_name=None, 
+                block=True, 
+                do_sdv=True, 
+                process_y_test=False,
                 show_fig=False,
                 return_fig=False,
                 figsize=None,
-                interval='d', denormalize=False, norm_max=1, norm_min=0, boxing=False, wider_size=False,
-                observation_color=None, uncertainty_label='Epistemic Uncertainty',
+                interval='h', 
+                denormalize=False, 
+                norm_max=1, 
+                norm_min=0, 
+                boxing=True, 
+                wider_size=False,
+                observation_color='#FF5050', 
+                uncertainty_label='Aleatoric Uncertainty',
                 fill_graph=False,
                 uncertainty_margin=1,
-                uncertainty_color='#aabbcc',
-                x_labels=None,
-                x_label='Time',
+                uncertainty_color='blue',
+                x_labels=True,
+                x_label='',
                 scale_down=False,
                 ylimit_min=None,
                 ylimit_max=None,
                 verbose=True,
-                prediction_color=None,
+                prediction_color='yellow',
                 y_preds_var1=0,
-                uncertainty_color1=None,
+                uncertainty_color1='black',
                 yticks=None,
                 xticksformat=None,
                 xticksvalues=None,
                 yticklabels=None,
-                uncertainty_ep_margin=1):
-    # print('plotting to filename:', file_name)
+                uncertainty_ep_margin=1,
+                xticks=None,
+                dateformat=None,
+                prediction_errors=None,
+                prediction_errors_color='blue',
+                add_grid=True,
+                is_legend=False):
     linewidth = 1
     markersize = 1
     marker = None
     linestyle = 'solid'
     prediction_linestyle='dashed'
+    uncertainty_margin, uncertainty_ep_margin = uc_margins(storm_to_test, num_hours,resolution_minutes,view_type)    
     if wider_size:
-        # print('Using wider figure size format...')
         figsize = (8.4, 4.8)
         
     fig, ax = plt.subplots(figsize=figsize)
     if process_y_test:
         y_test = list(np.array((list(y_test)))[0,:, 0])
-    # print('x:',len(x))
-    # for a in x:
-    #     print(a)
+    if is_legend:
+        ax.plot(x, y_test,
+                label='Observed SYM-H',
+                linewidth=linewidth,
+                markersize=markersize,
+                marker=marker,
+                linestyle=linestyle,
+                color=observation_color
+                )  
+        ax.plot(x, y_preds_mean ,
+                label='Predicted SYM-H',
+                linewidth=linewidth,
+                markersize=markersize,
+                marker=marker,
+                linestyle=prediction_linestyle,
+                color=prediction_color)
+                        
+        if prediction_errors is not None:
+            
+            ax2 = ax.twinx()
+            ax2.set_ylim(ylimit_min, ylimit_max)
+            if num_hours in [2,4,6]:
+                print('')
+            else:
+                ax2.yaxis.set_ticks([])        
+            ax.plot(x, prediction_errors,
+                    linewidth=0.2,
+                    markersize=markersize,
+                    marker=marker,
+                    linestyle=linestyle,
+                    color=prediction_errors_color,
+                    label='Prediction Error'
+                    )
+            if add_grid:
+                ax2.grid(which='both',linewidth=0.3,linestyle='dashed')
+                ax.grid(which='both',linewidth=0.3,linestyle='solid') 
+    else:
+        if prediction_errors is not None:
+            ax2 = ax.twinx()
+            ax2.set_ylim(ylimit_min, ylimit_max)
+            if num_hours in [2,4,6]:
+                print('')
+            else:
+                ax2.yaxis.set_ticks([])        
+            ax.plot(x, prediction_errors,
+                    linewidth=0.2,
+                    markersize=markersize,
+                    marker=marker,
+                    linestyle=linestyle,
+                    color=prediction_errors_color,
+                    label='Prediction Error'
+                    )
+            if add_grid:
+                ax2.grid(which='both',linewidth=0.3,linestyle='dashed')
+                ax.grid(which='both',linewidth=0.3,linestyle='solid') 
+        
+        ax.plot(x, y_preds_mean ,
+                label='Predicted SYM-H',
+                linewidth=linewidth,
+                markersize=markersize,
+                marker=marker,
+                linestyle=prediction_linestyle,
+                color=prediction_color)
+        ax.plot(x, y_test,
+                label='Observed SYM-H',
+                linewidth=linewidth,
+                markersize=markersize,
+                marker=marker,
+                linestyle=linestyle,
+                color=observation_color
+                )
+    ax.set_ylabel(label)
     
-    ax.plot(x, y_preds_mean ,
-            label='Prediction',
-            linewidth=linewidth,
-            markersize=markersize,
-            marker=marker,
-            linestyle=prediction_linestyle,
-            color=prediction_color)
-    ax.plot(x, y_test,
-            label='Observation',
-            linewidth=linewidth,
-            markersize=markersize,
-            marker=marker,
-            linestyle=linestyle,
-            color=observation_color
-            )
     if fill_graph:
         plt.fill_between(x, ((y_test ) - y_preds_var * uncertainty_ep_margin),
                              (y_preds_mean + y_preds_var * uncertainty_ep_margin),
-                             color=uncertainty_color, alpha=0.2,label=uncertainty_label)
+                             color=uncertainty_color, alpha=0.2,label='Epistemic Uncertainty')
 
         plt.fill_between(x, (y_preds_mean - y_preds_var1 * uncertainty_margin),
                              (y_preds_mean + y_preds_var1 * uncertainty_margin),
-                             color=uncertainty_color1, alpha=0.2, label=uncertainty_label)        
-        # plt.legend(loc='lower left')
+                             color=uncertainty_color1, alpha=0.2, label='Aleatoric Uncertainty')        
         
-    ylim_mx = np.array(y_test).max() + 5
-    ylim_min = np.array(y_test).min()
-    # ax.set_ylim(-165, 65)
-    # ax.set_ylim(ylimit_min,ylimit_max)
     if scale_down:
         ax.set_ylim(-5, 10)
-#     ax.set_ylim(66, 74)
     log('x_label is:', x_label)
     plt.xlabel(x_label)
     
     if ylimit_min is not None and ylimit_max is not None:
+        log('Setting ylimits...:', ylimit_min, ylimit_max)
         ax.set_ylim(ylimit_min, ylimit_max)
     label_y = label
     if label_y.startswith('F'):
         label_y = 'F10.7'
-    plt.ylabel(label_y)
-    # plt.xticks(fontsize= 12)
     plt.title(str(num_hours) + '' + interval + ' ahead prediction', fontsize=12, fontweight='bold')
-    
-    # myLocator = mticker.MultipleLocator(5)
-#     ax.xaxis.set_major_locator(myLocator)
-#     plt.locator_params(nbins=5)
+    if not prediction_errors:
+        if add_grid:
+            ax2 = ax.twinx()
+            ax2.set_ylim(ylimit_min, ylimit_max)
+            
+            ax2.grid(which='both',linewidth=0.3,linestyle='dashed')
+            
+            ax.grid(which='both',linewidth=0.3,linestyle='solid')
+            xt = []
+            if num_hours in [2,4,6]:
+                xt =[]
+            else:
+                ax2.yaxis.set_ticks([])             
+       
+    else: 
+        print('')
     if not  boxing:
-        # print('Removing top and right orders..')
         ax.spines['right'].set_color('none')
         ax.spines['top'].set_color('none')
     ax.xaxis.set_ticks_position('bottom')
@@ -617,27 +711,37 @@ def plot_figure(x, y_test, y_preds_mean, y_preds_var,
     ax.yaxis.set_ticks_position('left')
     ax.yaxis.set_tick_params(direction='in')
     if len(x) <= 6:
+        log('Setting x ticks to x:', x)
         ax.xaxis.set_ticks(x)
 
     if yticks is not None:
         ax.yaxis.set_ticks(yticks)
+        ax.axes.get_yaxis().set_visible(False)
 
     if yticklabels is not None:
-        ax.set_yticklabels(yticklabels)
+        log('setting the yticklabels:', yticklabels)
+        if len(yticks) > 0:
+            ax.set_yticklabels(yticklabels)
                 
-    ax.xaxis.set_major_locator(plt.MaxNLocator(4))
-    xfmt = md.DateFormatter('%m/%d/%y')
-    if xticksformat is not None:
-        xfmt = md.DateFormatter(xticksformat)
-    
-    ax.xaxis.set_major_formatter(xfmt)
-    if xticksvalues is not None:
-        ax.set_xticklabels(xticksvalues)    
+    ax.xaxis.set_major_locator(plt.MaxNLocator(len(xticksvalues)))
+    log('xticksvalues in utils:', xticksvalues)
+    log('xticks in utils1:', xticks)
+    if xticks is not None:
+        xticks= [str(xt) for xt in xticks]
+        ax.set_xticks(xticks)
+    ax.set_xticklabels(xticksvalues) 
+    if is_legend:
+        legend=ax.legend(ncol=4,fontsize="10", loc='upper center', bbox_to_anchor=(0.5, -0.05)) 
+        for legend in legend.get_lines():
+            legend.set_linewidth(6.0)
     if file_name is not None:
         os.makedirs(os.path.dirname(file_name), exist_ok=True)
+        log('Saving figure to file:', file_name,verbose=True)
         plt.savefig(file_name, bbox_inches='tight')
         if str(file_name.strip()).endswith('.pdf'):
             plt.savefig(str(file_name).strip().replace('.pdf','.png'), bbox_inches='tight')
+        if is_legend:
+            export_legend(legend, filename=str(file_name).strip().replace('.pdf','_legend.pdf'), expand=[-2,-2,2,2])
     if return_fig:
         return plt
     if show_fig:
@@ -645,9 +749,26 @@ def plot_figure(x, y_test, y_preds_mean, y_preds_var,
 
 
 
+def uc_margins(storm_to_test, h,resolution_minutes,view_type):
+    log(storm_to_test, h,resolution_minutes,view_type)
+    if storm_to_test == 37:
+        uncertainty_ep_margin=0.7
+        uncertainty_margin=4   
+    if storm_to_test == 36:
+        uncertainty_ep_margin=1
+        uncertainty_margin=5                                                             
+    if storm_to_test in [28,31,33,40,42]:
+        uncertainty_margin=8
+        uncertainty_ep_margin=0.9
+        if storm_to_test == 31:
+            uncertainty_margin=4
+            uncertainty_ep_margin=0.5                                         
+        if storm_to_test == 33:
+            uncertainty_margin=2.5
+            uncertainty_ep_margin=0.5                       
 
 
-
+    return uncertainty_margin, uncertainty_ep_margin
 
 def get_colors_from_cmap(cmap_name,n=3):
     from mycolorpy import colorlist as mcp
@@ -703,6 +824,75 @@ def uncertainty(model, X_test,col_index, N=100, metric='avg', verbose=0, scale_d
     epistemic = np.sqrt(epistemic) 
     return np.squeeze(prediction), np.std(np.squeeze(aleatoric)) *1, np.std(np.squeeze(epistemic)) *1, p_hat
 
+
+def get_range(d1,d2):
+    tokens1=d1.split('-')
+    if '/' in d1:
+        tokens1 = d1.split('/')
+        
+    tokens2=d2.split('-')
+    if '/' in d2:
+        tokens2 = d2.split('/')
+    year1=int(tokens1[0])
+    month1=int(tokens1[1])
+    day1=int(tokens1[2])
+    
+    year2=int(tokens1[0])
+    month2=int(tokens2[1])
+    day2=int(tokens2[2])
+    
+    t1 = datetime(year1,month1,day1,0,0,0)
+    t2 = datetime(year2,month2,day2,23,59,59)
+    a=[]
+    c_time = t1 
+    while c_time <= t2:
+        t = str(c_time.year) + '-' + str(c_time.month) + '-'  + str(c_time.day) +'-'
+        # print(t)
+        a.append(t)
+        c_time = c_time + timedelta(days=1)
+    return a
+
+
+
+def format_date_filter(d):
+    d = str(d)
+    tokens = str(d).split('-')
+    if '/' in d:
+        tokens = str(d).split('/')
+    a = []
+    for t in tokens:
+        if t.startswith('0'):
+            t = t[1:]
+        a.append(t)
+    # print('-'.join(a))
+    return '-'.join(a)
+
+def get_num(n):
+    n = str(n) 
+    if n.startswith('0'):
+        return n[1:]
+    return n
+
+def get_range_from_data(data):
+    rng = []
+    for r in range(len(data)):
+        s_d = data['Start date'][r]
+        e_d = data['End date'][r] 
+        t1 = format_date_filter(s_d)
+        t2 =  format_date_filter(e_d)
+        rng.extend(get_range(t1,t2))        
+        # print('training range:', value)
+    rng = list(set(rng))
+    rng.sort()
+    return rng
+
+def boolean(b):
+    if b == None:
+        return False
+    b = str(b).strip().lower()
+    if b in ['y','yes','ye','1','t','tr','tru','true']:
+        return True 
+    return False
 
 create_log_file()
 

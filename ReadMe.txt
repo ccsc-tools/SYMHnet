@@ -9,18 +9,18 @@ Other versions are not tested, but they should work if you have the environment 
 
 Python Packages:
 The following python packages and modules are required to run SYHMnet:
+joblib==1.3.1
+keras==2.8.0
+numpy==1.25.0
+pandas==1.5.1
+scikit-learn==1.3.0
+matplotlib==3.7.2
+seaborn==0.12.2
+scipy==1.11.1
 tensorflow==2.8.0
 tensorflow-gpu==2.8.0
 tensorflow-probability==0.14.1
-numpy==1.25.0
-pandas==1.5.1
-keras==2.8.0
-scikit-learn
-matplotlib==3.7.2
-matplotlib-inline==0.1.6
-seaborn==0.12.2
-scipy==1.11.1
-joblib==1.3.1
+tensorboard==2.8.0
 
 To install the required packages, you may use Python package manager "pip" as follow:
 1.	Copy the above packages into a text file, i.e., "requirements.txt"
