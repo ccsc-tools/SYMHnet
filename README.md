@@ -48,7 +48,7 @@ This notebook is Binder enabled and can be run on [mybinder.org](https://mybinde
 ### run_SYMHnet.ipynb (Jupyter Notebook for SYMHnet)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ccsc-tools/SYMHnet/HEAD?labpath=run_SYMHnet.ipynb)
 
-* Binder Notes *
+__Binder Notes__
 
 * Starting Binder might take some time to create and start the image.
 
