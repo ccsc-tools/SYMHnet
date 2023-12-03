@@ -48,7 +48,7 @@ figsize=(7,3)
 resolution_minutes=1
 view_type = ''
 
-def check_params(storm_to_test,start_hour,resolution_minutes,view_type):
+def check_test_params(storm_to_test,start_hour,resolution_minutes,view_type):
     if not resolution_minutes in [1,5]:
         print('Invalid resolution:', resolution_minutes)
         print('Supported resolution: 1 or 5')
@@ -61,20 +61,21 @@ def check_params(storm_to_test,start_hour,resolution_minutes,view_type):
     if not str(view_type).strip().lower() in ['' , '_lv']:
         print('Invalid localization view type:', view_type) 
         print('Supported localization view type: _lv or blank')
-        exit()        
+        exit()  
+              
 def test_storm(storm_to_test,
          start_hour,
          end_hour, 
          resolution_minutes=1, 
          do_pred_error=False,
          view_type = ''):
-    test(storm_to_test,
-             start_hour,
-             end_hour, 
-             resolution_minutes=resolution_minutes, 
-             do_pred_error=do_pred_error,
-             view_type = view_type,
-             jupyter_enabled=True)    
+    return test(storm_to_test,
+                start_hour,
+                end_hour, 
+                resolution_minutes=resolution_minutes, 
+                do_pred_error=do_pred_error,
+                view_type = view_type,
+                jupyter_enabled=True)    
 def test(storm_to_test,
          start_hour,
          end_hour, 
@@ -82,19 +83,19 @@ def test(storm_to_test,
          do_pred_error=False,
          view_type = '',
          jupyter_enabled=False):
-    # end_hour = start_hour+1
-    check_params(storm_to_test,start_hour,resolution_minutes,view_type)
+    figure_names = []
+    fig_ax = None
+    check_test_params(storm_to_test,start_hour,resolution_minutes,view_type)
     global figsize
     res = ''
     if resolution_minutes == 1:
         res = ''
-        resolution_minutes = 1
     else:
         res = '_5min'
-        resolution_minutes = 5    
+
     if is_small:
         figsize=(5,2.2)
-
+    
     log('Starting the training for start_hour:', start_hour, 'end_hour:', end_hour )
     storms_data = pd.read_csv('data'+os.sep  +'storms_list.csv')
     storm_years = list(storms_data['Start date'].values) 
@@ -113,17 +114,17 @@ def test(storm_to_test,
     test_storm_years = list(set(test_storm_years))
     test_storm_years.sort()
     log('test_years:', test_storm_years)
-        
+    fig = None 
+    ax = None 
     for k in range(start_hour,end_hour):
-        postfix = res 
-        if res == '':
-            postfix = '_1min'
-        else:
-            postfix = '_5min'
-        data_dir_to_save = 'data' + os.sep + 'solar_wind_symh' + postfix + os.sep + str(k) + 'h'
+        if jupyter_enabled and  k == 1:
+            fig, ax = plt.subplots(1, 2,figsize=figsize) 
+            # fig_ax = [fig,ax]       
+        postfix = '_' + str(resolution_minutes) + 'min'
+        data_dir_to_save = 'data' + os.sep + 'solar_wind_symh_' + str(resolution_minutes) + 'min' + os.sep + str(k) + 'h'
         os.makedirs(data_dir_to_save, exist_ok=True)
         epochs = 3
-        print('Running testing for storm #' +str(storm_to_test) + ' for ', str(k) +'-hour ahead')
+        print('Running testing for storm #' +str(storm_to_test) + ' for ', str(k) +'-hour ahead for', str(resolution_minutes)  +'-minute resolution')
         num_hours = k
         dataset = SYMHnetDataset(num_hours=num_hours, columns_names=columns_names)
         rows, cols = (len(columns_names), len(columns_names))
@@ -153,18 +154,14 @@ def test(storm_to_test,
         if k == 1:
             test_storms = test_storms.reset_index()
             
-        if res == '':
-            res = '1min'
-        else:
-            res = '5min'
+        res = str(resolution_minutes) + 'min'
         w_dir = 'models_storms_' + res  +os.sep  + str(num_hours) + 'h_' + str(col_name).replace('_','').lower()
         model = keras.models.load_model(w_dir + os.sep + 'model_weights_full')
         ylimit_min=None 
         ylimit_max = None            
         storm_num = storm_to_test
         i = storm_to_test - 26
-        if res == '':
-            res = '1min'
+        res = str(resolution_minutes) + 'min'
         result_data_set_file = 'results_datasets' + os.sep + 'storm_num_' + str(storm_num) + os.sep + res 
         os.makedirs(result_data_set_file, exist_ok=True) 
         result_data_set_file = result_data_set_file + os.sep + str(start_hour) + 'h_uq_training.csv'
@@ -216,8 +213,7 @@ def test(storm_to_test,
         test_data = s_data
         current_date = start_date_ts
         minutes = resolution_minutes
-        if res == '':
-            minutes = 1
+
         for c in range(len(test_data)-1):
             ax_dates.append(current_date)
             current_date = current_date + timedelta(minutes=minutes)
@@ -239,7 +235,7 @@ def test(storm_to_test,
         predictions_ft = uncertainty(model, x_test,col_index, N=numberOfSamples, verbose=verbose)
         
         y_preds = predictions_ft[0]
-        w_dir = 'models_storms_' + res  +os.sep  + str(num_hours) + 'h_' + str(col_name).replace('_','').lower() 
+        w_dir = 'models_storms_' + str(resolution_minutes) +'min'  +os.sep  + str(num_hours) + 'h_' + str(col_name).replace('_','').lower() 
         handler = open(result_data_set_file,'w')
         log('saving to:', result_data_set_file)
         handler.write('Date,Actual,Prediction,Aleatoric,Epistemic\n')
@@ -250,9 +246,8 @@ def test(storm_to_test,
                 handler.write(str(ax_dates[z]) + ','+ str(y_test[z] ) + ',' + str(y_preds[z]) + '\n')
         handler.flush()
         handler.close() 
-        file_name_aleatoric = 'figures' + os.sep +'storm_' +str(res).replace('_','') + '_' + str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_aleatoric.pdf'
-        file_name_epistemic ='figures' + os.sep + 'storm_' + str(res).replace('_','') + '_' +str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_epistemic.pdf'
         file_name_uq ='figures' + os.sep + 'storm_' +str(res).replace('_','') + '_' + str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_uq' + view_type +'.pdf'
+        
         l = len(ax_dates)
         log('dates-->', ax_dates[0],ax_dates[(l//4)], ax_dates[(l//4)*2], ax_dates[-1] )
         y_label = str(col_name).replace('_','-') + ' (nT)'
@@ -325,7 +320,7 @@ def test(storm_to_test,
         ylimit_min = -450
         ylimit_max = 150
         ytickvalues = [-400, -300, -200, -100, 0, 100]                
-
+        figure_names.append(file_name_uq)
         plot_figure(storm_to_test, resolution_minutes,view_type,
                     ax_dates,y_test,y_preds,
                     predictions_ft[1],
@@ -343,6 +338,7 @@ def test(storm_to_test,
                     prediction_errors=pred_errors,
                     jupyter_enabled=jupyter_enabled
                     )
+    return figure_names
     
 if __name__ == '__main__':
     if len(sys.argv) < 5:
@@ -371,7 +367,6 @@ if __name__ == '__main__':
     res = ''
     if resolution_minutes == 1:
         res = ''
-        resolution_minutes = 1
     else:
         res = '_5min'
         resolution_minutes = 5

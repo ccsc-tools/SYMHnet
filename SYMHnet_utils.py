@@ -39,30 +39,22 @@ import csv
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
-import matplotlib.ticker as mticker 
 import matplotlib
 import pickle
 
 import seaborn as sns
 
-import argparse
 import time
 from time import sleep
-from tensorflow.keras.utils import plot_model
-from sklearn.metrics import mean_squared_error
 import math
 from math import sqrt
-from scipy.stats import pearsonr
-import random
 from tensorflow import keras
 import tensorflow.compat.v2 as tf
 tf.enable_v2_behavior()
 from tensorflow.keras import layers, models
-import tensorflow_probability as tfp
+
 from sklearn.model_selection import train_test_split
 verbose = False 
-
-tfd = tfp.distributions
 
 col_name = str('SYM_H').upper()
 col_name = col_name.replace('_','')
@@ -79,8 +71,6 @@ columns_names=['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM'
 features = columns_names
 features1 = ['Scalar_B', 'BZ_GSE', 'BZ_GSM', 'SW_Plasma_Temperature', 'SW_Plasma_Speed', 'Flow_pressure', 'E_elecrtric_field']
 sym_col = 'SYM_H'
-fill_values = [999.9, 999.9, 999.9, 999.9, 999.9, 999.9, 999.9, 9999999, 999.9, 9999, 999.9, 999.9, 99.99, 999.99]
-fill_values = [999.9, 999.9, 999.9, 999.9, 999.9, 999.9, 9999999, 999.9, 9999, 999.9, 999.9, 99.99, 999.99,99.99]
 
 fill_values =[9999.99,9999.99,9999.99,9999.99,9999.99,9999.99,99999.9,999.99,9999999,99.99,999.99]
 
@@ -115,9 +105,7 @@ def set_logging(dir_name='logs'):
     global log_handler
     if os.path.exists(log_file):
         l_stats = os.stat(log_file)
-        # print(l_stats)
         l_size = l_stats.st_size
-        # print('l_size:', l_size)
             
         if l_size >= 1024 * 1024 * 50:
             files_list = os.listdir('logs')
@@ -126,7 +114,6 @@ def set_logging(dir_name='logs'):
                 if 'solarmonitor_html_parser_' in f:
                     files.append(int(f.replace('logs', '').replace('/', '').replace('kp_run_', '').replace('.log', '')))
             files.sort()
-            # print(files)
             if len(files) == 0:
                 files.append(0)
             os.rename(log_file, log_file.replace('.log', '_' + str(files[len(files) - 1] + 1) + '.log'))
@@ -135,7 +122,6 @@ def set_logging(dir_name='logs'):
             log_handler = open(log_file, 'a')
     else:
         log_handler = open(log_file, 'w')
-    # print('log_handler:', log_handler)
 
     
 class Logger(object):
@@ -153,10 +139,6 @@ class Logger(object):
         # this handles the flush command by doing nothing.
         # you might want to specify some extra behavior here.
         pass  
-
-
-
-
 
 def get_d_str(t):
     y = str(t.year)
@@ -206,8 +188,6 @@ def print_summary_to_file(s):
         print(s, file=f)
         
     
-
-
 def get_data (t, dataset_name='training', d_type='hr'):
     file = data_dir + os.sep + file_prefix + str(dataset_name) + '_' + str(t) + str(d_type) + '.csv'
     log('Loading:', dataset_name , 'from:', file)
@@ -230,284 +210,15 @@ def drop_columns(data, cols=[]):
     return data
 
 
-def group_data_series_len(X_train, y_train, series_len):
-    X_train_series = []
-    y_train_series = []
-    print(len(X_train))
-    for k in range(len(X_train) - series_len):
-        group_data = []
-        kp_data = None
-        for g in range(series_len):
-            group_data.append(X_train[k + g])
-            kp_data = int(float((y_train[k + g])))
-        X_train_series.append(group_data) 
-        y_train_series.append(kp_data)
-    # print(len(X_train_series), len(y_train_series))
-    # print(X_train_series[0], y_train_series[0])
-    X_train_series = np.array(X_train_series)
-    print('X_train_series.shape:', X_train_series.shape)
-    X_train_series = X_train_series.reshape(X_train_series.shape[0], X_train_series.shape[1], X_train_series.shape[2])
-    print('X_train_series.shape:', X_train_series.shape)
-    return [np.array(X_train_series), np.array(y_train_series)]
-
 def get_data_from_file(file_name, verbose=False):
-    # log('Loading data from file:', file_name, verbose=verbose)
     data = pd.read_csv(file_name)
     return data
 
-def get_symh_data_from_file(num_hours,
-                            data_type='train',
-                            symh_data_dir='solar-wind-data-symh',
-                            columns_names =['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM','BZ_GSM','Speed','Proton_Density','Proton_Temperature','Flow_pressure','Electric_field'],
-                            scale_down=False,
-                            scale_up=False,
-                            sample_size=None,
-                            test_sample=None,
-                            normalize_data =False,
-                            skip_data=False,
-                            random_selection=False,
-                            data_filter=None,
-                            ):
-    # symh_data_dir='solar-wind-data-symh'
-    interval_type='hourly'
-    s = interval_type[0]
-    num_hours = str(num_hours) 
-    data_file_full = 'solar_wind_parameters_data_' + str(num_hours) + '_' + interval_type + '_' + str(data_type)+'.csv'    
-    day_dir = interval_type[0]
-    all_file =  data_dir + os.sep + symh_data_dir + os.sep + num_hours + day_dir + os.sep + data_file_full
-    print('Loading from file:', all_file)
-    all_data = pd.read_csv(all_file)
-    if data_filter is not None:
-        print('Appling filter YEAR is in:', data_filter)
-        all_data = all_data.loc[all_data['YEAR'].isin(data_filter)].reset_index()   
-    if sample_size is not None:
-        # all_data = all_data.sample(sample_size)
-        print('Loading sample sample:' ,sample_size)
-        all_data = all_data[:sample_size].reset_index()
-    data_years = list(set(all_data['YEAR'].values))
-    data_years.sort()
-    print('data_years:', data_years)      
-    return all_data
-
 def get_dates_from_data(data, date_col='Timestamp'):
     x_dates = []        
-    # x_dates = list(test_data_all['YEAR'].values)
     for i in range (len(data)):
         x_dates.append(get_date_from_days_year_split(data['DOY'][0], data['YEAR'][0]))
     return x_dates
-
-def get_good_symh_data_new_from_file(num_hours, interval_type,symh_data_dir, sym_col ='SYM_H',
-                                     columns_names =['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM','BZ_GSM','Speed','Proton_Density','Proton_Temperature','Flow_pressure','Electric_field'],
-                                     scale_down=False,
-                                     scale_up=False,
-                                     sample_size=None,
-                                     test_sample=None,
-                                     normalize_data =False,
-                                     skip_data=False,
-                                     random_selection=False,
-                                     data_filter=None,
-                                     train_data_filter=None
-                                     ):
-    s = interval_type[0]
-    train_file_name = 'solar_wind_parameters_data_' + str(num_hours) + '_' + interval_type + '_train.csv'
-    test_file_name = 'solar_wind_parameters_data_' + str(num_hours) + '_' + interval_type + '_test.csv'
-    data_file_full = 'solar_wind_parameters_data_' + str(num_hours) + '_' + interval_type + '_all.csv'    
-    num_hours = str(num_hours) 
-    # print('Working on', interval_type[0],'#:', num_hours)
-    day_dir = interval_type[0]
-
-    tr_file = data_dir + os.sep + symh_data_dir + os.sep + num_hours + day_dir + os.sep + train_file_name
-    ts_file = data_dir + os.sep + symh_data_dir + os.sep + num_hours + day_dir + os.sep + test_file_name
-    all_file =  data_dir + os.sep + symh_data_dir + os.sep + num_hours + day_dir + os.sep + data_file_full
-    print('Loading from file:', tr_file)
-    all_data = pd.read_csv(tr_file)
-    print('')
-    
-    # all_data[sym_col] = [k//10 for k in all_data[sym_col].values]
-    # print('all_data len before:', len(all_data)) 
-    # print('all_data.columns:', all_data.columns)
-
-    # all_data = all_data.loc[all_data['YEAR'] != 2022].reset_index()
-
-    
-    print('Loading test from file:', ts_file)
-    test_data_all = pd.read_csv(ts_file, dtype=None)
-    if test_sample is not None:
-        test_data_all = test_data_all[len(test_data_all) - test_sample:].reset_index()
-    # if sample_size is not None:
-    #     # all_data = all_data.sample(sample_size)
-    #     all_data = all_data[len(all_data) - sample_size:].reset_index()
-    if random_selection:
-        print('Loading the entire full data for random selection from file:', data_file_full)
-        full_data = pd.read_csv(all_file)
-        
-        full_data[sym_col] = full_data[sym_col].shift(-1 * (int(num_hours)*5))
-        full_data = full_data.dropna()
-        index = full_data[sym_col].index[full_data[sym_col].apply(np.isnan)]
-        df_index = full_data.index.values.tolist()
-        print('nans:', [df_index.index(i) for i in index])
-        full_data = full_data.rename(columns={'YYYY':'YEAR'})
-        print(list(full_data[sym_col].values)[1])
-        print('data_filter:', data_filter)
-        a_years=list(set(list((full_data['YEAR'].values))))
-        a_years.sort()
-        print('all years:', a_years)
-        if data_filter is not None:
-            full_data = full_data.loc[full_data['YEAR'].isin(data_filter)].reset_index()
-        all_data, test_data_all = train_test_split(full_data, test_size=0.01, random_state=None)
-        print('Columns:', full_data.columns)
-        t_years=list(set(list((all_data['YEAR'].values))))
-        t_years.sort() 
-        te_years=  list(set(list((test_data_all['YEAR'].values))))
-        te_years.sort()
-        print('train years:', len(all_data) , t_years)
-        print('test  years:', len(test_data_all), te_years)
-        
-        
-    all_data = all_data[:]
-    if train_data_filter is not None:
-        print('Applying filter to training data YEAR is in:', train_data_filter)
-        all_data = all_data.loc[all_data['YEAR'].isin(train_data_filter)].reset_index()
-    if 'index' in all_data.columns:
-        all_data = all_data.drop('index', axis=1)     
-    if sample_size is not None:
-        # all_data = all_data.sample(sample_size)
-        all_data = all_data[:sample_size].reset_index()        
-    print('len(test_data_all):',len(test_data_all))
-    test_years = list(set(list( test_data_all['YEAR'].values)))
-    train_years = list(set(list(all_data['YEAR'].values)))
-    
-    test_years.sort() 
-    train_years.sort()
-    print('Train years:', train_years) 
-    print('Test years:' , test_years)    
-    if scale_down:
-        test_data_all[sym_col] = [float(v)/10 for v in test_data_all[sym_col]]
-        all_data[sym_col] = [float(v)/10 for v in all_data[sym_col]]
-    print('train min:',np.array(all_data[sym_col].values).min(), 'max:', np.array(all_data[sym_col].values).max())
-    print('test  min:',np.array(test_data_all[sym_col].values).min(), 'max:', np.array(test_data_all[sym_col].values).max())        
-    if scale_up:
-        min_val_test = np.array(test_data_all[sym_col].values).min()
-        min_val_train = np.array(all_data[sym_col].values).min()
-        print('min_val test:', min_val_test)
-        test_data_all[sym_col] = (test_data_all[sym_col] - min_val_train)//10
-        
-        min_val = np.array(all_data[sym_col].values).min()
-        print('min_val train:', min_val_train)
-        all_data[sym_col] = (all_data[sym_col] - min_val_train)//10
-    if normalize_data:
-        test_data_all[sym_col] = (test_data_all[sym_col] - np.array(test_data_all[sym_col]).min())/ (np.array(test_data_all[sym_col]).max() - np.array(test_data_all[sym_col]).min()) 
-        all_data[sym_col] = (all_data[sym_col] - np.array(all_data[sym_col]).min())/ (np.array(all_data[sym_col]).max() - np.array(all_data[sym_col]).min()) 
-        
-    print('train min:',np.array(all_data[sym_col].values).min(), 'max:', np.array(all_data[sym_col].values).max())
-    print('test  min:',np.array(test_data_all[sym_col].values).min(), 'max:', np.array(test_data_all[sym_col].values).max())
-    # test_data_all[sym_col] = [k//10 for k in test_data_all[sym_col].values]
-    # print('total size:'   , (len(test_data_all) + len(all_data)))
-    # print('test_data_all[Timestamp][0]', test_data_all['Timestamp'][0])
-    # print('test_data_all[Timestamp][last]', test_data_all['Timestamp'][len(test_data_all)-1])
-
-    # test_data = test_data_all.loc[test_data_all['Timestamp'].str.contains('|'.join(['2021-7','2021-8','2021-9']))].reset_index()
-    # test_filter = ['2021-10-' + str(i) + '-' for i in range(1, 32)]
-    # test_filter.extend(['2021-11-' + str(i) + '-' for i in range(1, 31)])
-    # test_filter =['2022-']
-    # test_data = test_data_all.loc[test_data_all['Timestamp'].str.contains('|'.join(test_filter))].reset_index()
-    test_data = test_data_all.reset_index()
-    all_data = all_data.reset_index()
-    if verbose:
-        log('test_data.max:', np.array(test_data[sym_col].values).max())
-        log('test_data.min:', np.array(test_data[sym_col].values).min())
-        log('1 test_data[Timestamp][0]', test_data['Timestamp'][0])
-        log('1 test_data[Timestamp][last]', test_data['Timestamp'][len(test_data) - 1])    
-    orig_y_test = test_data[sym_col].values
-    # data_2021 = test_data_all.loc[test_data_all['Timestamp'].str.contains('|'.join(['2021-' + str(i) for i in range(1,9)]))]
-    # print('data_2021[Timestamp][0]', data_2021['Timestamp'][0])
-    # print('data_2021[Timestamp][last]', data_2021['Timestamp'][len(data_2021)-1])
-    if verbose:
-        log('all_data.columns:', all_data.columns)
-    # data_2021 = test_data_all.loc[~test_data_all['Timestamp'].isin(test_filter)]
-    # all_data = pd.concat([all_data, data_2021])
-    # all_data.sort_values(by=['Timestamp'])
-    # print('all_data.size:', len(data_2021))
-    # all_data  = all_data.reset_index()
-        print('all_data[Timestamp][0]', all_data['Timestamp'][0])
-    # print('all_data[Timestamp][last]', all_data['Timestamp'][len(all_data)-1])  
-        
-    cols = all_data.columns 
-    # features = ['B_IMF', 'B_GSE', 'B_GSM', 'SW_Temp', 'SW_Speed', 'P_Pressure', 'E_Field']
-    # columns_names  =['Scalar_B',  'BZ_GSE', 'SW_Plasma_Temperature',  'SW_Proton_Density','SW_Plasma_Speed', 'Flow_pressure', 'E_elecrtric_field']
-
-    features = columns_names
-    f_index = sym_col
-    # print(features, sym_col)    
-    
-    norm_data = all_data[f_index]
-    fig_optional_name = ''
-    
-    # train_percent = int(float(80. / 100. * len(all_data))) 
-    # test_val_precent = int((len(all_data) - train_percent) / 2) - 50
-    # print('train_precent:', train_percent, 'validate:', test_val_precent, 'test:', test_val_precent)
-    
-    train_data = all_data[:]
-    
-    train_data = clean_filled_values(train_data,columns_names)
-    test_data = clean_filled_values(test_data,columns_names)
-    train_percent = int(float(70. / 100. * len(all_data))) 
-    test_val_precent = int((len(all_data) - train_percent) / 2) - 50    
-        
-#     print(train_data)
-    valid_data = all_data[train_percent:-test_val_precent]
-    
-    # print('size of the test_data_all:', len(test_data_all))
-    # print('len(train_data):', len(train_data), 'len(valid_data):', len(valid_data), 'len(test_data):', 
-          # len(test_data),
-          # 'len(orig_y_test):', len(orig_y_test))
-
-    X_train = train_data[features].values
-    X_train = reshape_x_data(X_train)
-    # print('X_train.shape:', X_train.shape)
-    y_train = reshape_y_data(train_data[f_index][:].values)
-    
-    X_valid = valid_data[features].values
-    X_valid = reshape_x_data(X_valid)
-    y_valid = reshape_y_data(norm_data[train_percent:-test_val_precent])
-    
-    X_test = test_data[features].values
-    print('len(X_test):', len(X_test))
-    X_test = reshape_x_data(X_test)
-
-    # print('X_test size:', len(X_test))
-#     y_test = reshape_y_data(norm_data[train_percent + test_val_precent:])
-    y_test = reshape_y_data(test_data[f_index])
-    # print('y_test len:', len(y_test))
-    orig_y_test = reshape_y_data(orig_y_test)
-    y = test_data['YEAR'][0]
-    d = test_data['DOY'][0]
-    h = test_data['HR'][0]
-                
-    y1 = test_data['YEAR'][len(test_data) - 1]
-    d1 = test_data['DOY'][len(test_data) - 1]
-    h1 = test_data['HR'][len(test_data) - 1]
-    d = get_date_from_days_year_split(d, y)
-    # print('d:', d)
-    x_dates = []        
-    # x_dates = list(test_data_all['YEAR'].values)
-    for i in range (len(test_data)):
-        x_dates.append(get_date_from_days_year_split(test_data['DOY'][0], test_data['YEAR'][0]))
-    # x_dates=list(set(x_dates))
-    # print('x_dates:', x_dates)
-    if skip_data:
-        l = len(X_train)
-        a = []
-        for i in range(0,l,10):
-            a.append(i)
-        print('len:', l, 'len(a):', len(a)) 
-        X_train = np.array(X_train[a])
-        y_train = np.array(y_train[a])
-        # for b in a:
-        #     print(b)
-    return [ X_train, y_train, X_test, y_test, X_valid, y_valid, x_dates]
-
-
 
 
 def get_date_from_days_year(d, y):
@@ -582,6 +293,7 @@ def plot_figure(storm_to_test,
                 add_grid=True,
                 is_legend=False,
                 jupyter_enabled=False):
+ 
     linewidth = 1
     markersize = 1
     marker = None
@@ -590,7 +302,6 @@ def plot_figure(storm_to_test,
     uncertainty_margin, uncertainty_ep_margin = uc_margins(storm_to_test, num_hours,resolution_minutes,view_type)    
     if wider_size:
         figsize = (8.4, 4.8)
-        
     fig, ax = plt.subplots(figsize=figsize)
     if process_y_test:
         y_test = list(np.array((list(y_test)))[0,:, 0])
@@ -737,6 +448,8 @@ def plot_figure(storm_to_test,
             legend.set_linewidth(6.0)
     if file_name is not None:
         os.makedirs(os.path.dirname(file_name), exist_ok=True)
+        if not jupyter_enabled:
+            log('Saving figure to file:', file_name,verbose=True)
         log('Saving figure to file:', file_name,verbose=True)
         plt.savefig(file_name, bbox_inches='tight')
         if str(file_name.strip()).endswith('.pdf'):
@@ -747,10 +460,14 @@ def plot_figure(storm_to_test,
             plt.close()
     if return_fig:
         return plt
-    if show_fig and not jupyter_enabled:
-        plt.show(block=block)
-    if jupyter_enabled:
-        plt.close()
+    if show_fig :
+        if jupyter_enabled:
+            plt.close()
+        else :
+            plt.show(block=block)
+    else:
+        if jupyter_enabled:
+            plt.close() 
 
 
 
@@ -797,9 +514,8 @@ def pad_progress_bar(n,d):
     return n
 
 def uncertainty(model, X_test,col_index, N=100, metric='avg', verbose=0, scale_down=False):
-    # predict stochastic dropout model T times
     p_hat = []
-    print('Testing is in progress..')
+    log('Testing is in progress..')
     aleatoric=[]
     epistemic = []
     for t in range(N):
