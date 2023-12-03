@@ -580,7 +580,8 @@ def plot_figure(storm_to_test,
                 prediction_errors=None,
                 prediction_errors_color='blue',
                 add_grid=True,
-                is_legend=False):
+                is_legend=False,
+                jupyter_enabled=False):
     linewidth = 1
     markersize = 1
     marker = None
@@ -742,10 +743,14 @@ def plot_figure(storm_to_test,
             plt.savefig(str(file_name).strip().replace('.pdf','.png'), bbox_inches='tight')
         if is_legend:
             export_legend(legend, filename=str(file_name).strip().replace('.pdf','_legend.pdf'), expand=[-2,-2,2,2])
+        if jupyter_enabled:
+            plt.close()
     if return_fig:
         return plt
-    if show_fig:
+    if show_fig and not jupyter_enabled:
         plt.show(block=block)
+    if jupyter_enabled:
+        plt.close()
 
 
 
@@ -794,7 +799,7 @@ def pad_progress_bar(n,d):
 def uncertainty(model, X_test,col_index, N=100, metric='avg', verbose=0, scale_down=False):
     # predict stochastic dropout model T times
     p_hat = []
-    print('Uncertainty Quantification, please wait while in progress..')
+    print('Testing is in progress..')
     aleatoric=[]
     epistemic = []
     for t in range(N):
