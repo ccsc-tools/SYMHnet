@@ -196,9 +196,7 @@ def test(storm_to_test,
         max_val = np.array(s_data['SYM_H']).max()
         min_val = np.array(s_data['SYM_H']).min()
         log(storm_num,'range:', value)
-        # if jupyter_enabled:
-        #     s_data = s_data[-1000:]
-        #     s_data = s_data[:-1000]
+
         if 'level_0' in s_data.columns:
             s_data = s_data.drop('level_0',axis=1)
         
