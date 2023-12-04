@@ -993,3 +993,8 @@ Running testing for storm #42 for  2-hour ahead for 1-minute resolution
 [2023-12-04 10:20:38] xticks in utils1: [datetime.datetime(2018, 8, 22, 0, 0), datetime.datetime(2018, 8, 25, 15, 58), datetime.datetime(2018, 8, 29, 7, 56), datetime.datetime(2018, 9, 1, 23, 55)] 
 [2023-12-04 10:20:38] [2023-12-04 10:20:38] Saving figure to file: Saving figure to file: figures\storm_1min_42_2h_symh_uq.pdf figures\storm_1min_42_2h_symh_uq.pdf 
 
+You must provide all required input parameters
+Usage:
+SYMHnet_test <storm to test: 26 to 42>  <resolution type: 1|5 > <prediction error True|False> <local view True|False>
+For example to test storm 37 for 5-minute resolution with prediction error for local view:
+SYMHnet_test 37 5 True True
