@@ -69,13 +69,13 @@ def test_storm(storm_to_test,
          resolution_minutes=1, 
          do_pred_error=False,
          view_type = ''):
-    return test(storm_to_test,
-                start_hour,
-                end_hour, 
-                resolution_minutes=resolution_minutes, 
-                do_pred_error=do_pred_error,
-                view_type = view_type,
-                jupyter_enabled=True)    
+    test(storm_to_test,
+            start_hour,
+            end_hour, 
+            resolution_minutes=resolution_minutes, 
+            do_pred_error=do_pred_error,
+            view_type = view_type,
+            jupyter_enabled=True)    
 def test(storm_to_test,
          start_hour,
          end_hour, 
@@ -196,7 +196,9 @@ def test(storm_to_test,
         max_val = np.array(s_data['SYM_H']).max()
         min_val = np.array(s_data['SYM_H']).min()
         log(storm_num,'range:', value)
-        
+        # if jupyter_enabled:
+        #     s_data = s_data[-1000:]
+        #     s_data = s_data[:-1000]
         if 'level_0' in s_data.columns:
             s_data = s_data.drop('level_0',axis=1)
         
@@ -338,7 +340,6 @@ def test(storm_to_test,
                     prediction_errors=pred_errors,
                     jupyter_enabled=jupyter_enabled
                     )
-    return figure_names
     
 if __name__ == '__main__':
     if len(sys.argv) < 5:
