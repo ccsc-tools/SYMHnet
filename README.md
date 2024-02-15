@@ -1,5 +1,5 @@
 # Prediction of the SYM-H Index Using a Bayesian Deep Learning Method with Uncertainty Quantification
-
+[![DOI](https://github.com/ccsc-tools/zenodo_icons/blob/main/icons/symh.svg)](https://zenodo.org/records/10602518)
 ## Author
 ### Yasser Abduallah, Khalid A. Alobaid, Jason T. L. Wang, Haimin Wang, Vania K. Jordanova, Vasyl Yurchyshyn, Huseyin Cavus, and Ju Jing
 
