@@ -68,8 +68,9 @@ uncertainty_ep_margin=1
 supported_cols = ['SYM_H','SYMH']
 supported_test_storms = [i for i in range(26,43)]
 columns_names=['Field_magnitude_average','BX_GSE_GSM','BY_GSE','BZ_GSE','BY_GSM','BZ_GSM','Speed','Proton_Density','Flow_pressure','Electric_field',col_name]    
+columns_names=['Field_magnitude_average','BY_GSM','BZ_GSM','Speed','Proton_Density','Flow_pressure','Electric_field',col_name]    
+
 features = columns_names
-features1 = ['Scalar_B', 'BZ_GSE', 'BZ_GSM', 'SW_Plasma_Temperature', 'SW_Plasma_Speed', 'Flow_pressure', 'E_elecrtric_field']
 sym_col = 'SYM_H'
 
 fill_values =[9999.99,9999.99,9999.99,9999.99,9999.99,9999.99,99999.9,999.99,9999999,99.99,999.99]
@@ -229,7 +230,12 @@ def get_date_from_days_year_split(d, y):
     date = get_date_from_days_year(d, y)
     return [date.year, date.month, date.day]
 
-    
+def get_time_from_timestamp(t,h=1, storm=37):
+    tokens = [int(a) for a in t.split('-')]
+    # if h==5:
+    #     # if storm
+    #     return datetime(tokens[0],tokens[1], tokens[2], tokens[3],(tokens[4]+1)%59,0) + timedelta(hours=1,minutes=24);
+    return datetime(tokens[0],tokens[1], tokens[2], tokens[3],(tokens[4]+1)%59,0) ;
 def reshape_x_data(data):
     data = [ np.array(c).reshape(len(c), 1) for c in data]
     data = np.array(data)

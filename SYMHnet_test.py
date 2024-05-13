@@ -37,7 +37,7 @@ from tensorflow import keras
 
 from SYMHnet_utils import *
 from SYMHnet_dataset import * 
-
+lag=1
 num_hours = 1
 interval_type = 'hourly'
 epochs = 100
@@ -190,7 +190,10 @@ def test(storm_to_test,
                     value = ['2004-11-7-' + str(n) for n in range(0,3)]                      
         log('value 2:', value)
         s_data = storms_data.loc[storms_data['Timestamp'].str.contains('|'.join(value)) ]
-
+        s_d = s_data[:]
+        orig_timestamp=s_d['Timestamp'].values
+        orig_timestamp = [get_time_from_timestamp(d1,num_hours) for d1 in orig_timestamp]
+        
         log(storm_num,'storms_data size:', len(storms_data), 's_data size:', len(s_data))
         log(storm_num,'min:',np.array(s_data['SYM_H']).min(),'max:', np.array(s_data['SYM_H']).max())
         max_val = np.array(s_data['SYM_H']).max()
@@ -214,18 +217,21 @@ def test(storm_to_test,
         current_date = start_date_ts
         minutes = resolution_minutes
 
-        for c in range(len(test_data)-1):
-            ax_dates.append(current_date)
-            current_date = current_date + timedelta(minutes=minutes)
+        # for c in range(len(test_data)-1):
+        #     ax_dates.append(current_date)
+        #     current_date = current_date + timedelta(minutes=minutes)
+        for c in range(lag-1, len(test_data)-(1)):
+            # ax_dates.append(current_date)
+            ax_dates.append(str(str(orig_timestamp[c])))
+            # current_date = current_date + timedelta(minutes=minutes)        
         end_date_ts = ax_dates[-1]
         log('end_date_ts:', end_date_ts)
     
         test_array = s_data 
         test_dataset = dataset.create_tf_dataset(
             test_array,
-            batch_size=test_array.shape[0]
+            batch_size=test_array.shape[0],input_sequence_length=lag
         )
-    
         x_test, y = next(test_dataset.as_numpy_iterator())
         col_index = len(columns_names)-1
         y_pred = model.predict(x_test)
@@ -241,9 +247,9 @@ def test(storm_to_test,
         handler.write('Date,Actual,Prediction,Aleatoric,Epistemic\n')
         for z in range(len(y_test)):
             if z == 0:
-                handler.write(str(ax_dates[z]) + ',' +  str(y_test[z] ) + ',' + str(y_preds[z]) + ',' + str(predictions_ft[1]) + ',' + str(predictions_ft[2]) + '\n')
+                handler.write(str((orig_timestamp[z+(lag-1)])) + ',' +  str(y_test[z] ) + ',' + str(y_preds[z]) + ',' + str(predictions_ft[1]) + ',' + str(predictions_ft[2]) + '\n')
             else:
-                handler.write(str(ax_dates[z]) + ','+ str(y_test[z] ) + ',' + str(y_preds[z]) + '\n')
+                handler.write(str(str(orig_timestamp[z+(lag-1)])) +  ',' + str(y_test[z] ) + ',' + str(y_preds[z]) + '\n')
         handler.flush()
         handler.close() 
         file_name_uq ='figures' + os.sep + 'storm_' +str(res).replace('_','') + '_' + str(storm_num) +'_' + str(num_hours) + interval_type[0] +'_' + str(col_name).replace('_','').lower()  + '_uq' + view_type +'.pdf'
@@ -375,7 +381,7 @@ if __name__ == '__main__':
     print('Start testing hour:', starting_hour, 'and hour:', ending_hour)
     for h in hours_list:
         starting_hour = h
-        ending_hour = h + 2     
+        ending_hour = h + len(hours_list)     
         test(storm_to_test, 
              starting_hour, 
              ending_hour,
